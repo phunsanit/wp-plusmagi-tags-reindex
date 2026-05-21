@@ -112,8 +112,8 @@ jQuery(document).ready(function ($) {
 
 	function switchTab(tabName) {
 		activeTab = tabName;
-		$results.find('.wp-tab').removeClass('active');
-		$results.find('.wp-tab[data-tab="' + tabName + '"]').addClass('active');
+		$results.find('.plusmagi-tab').removeClass('active');
+		$results.find('.plusmagi-tab[data-tab="' + tabName + '"]').addClass('active');
 
 		$results.find('.wp-tab-content').hide();
 		$results.find('#tab-content-' + tabName).show();
@@ -151,7 +151,7 @@ jQuery(document).ready(function ($) {
 				method: 'GET',
 				data: { term: term },
 				beforeSend: function (xhr) {
-					xhr.setRequestHeader('X-WP-Nonce', wpSearch.nonce);
+					xhr.setRequestHeader('X-WP-Nonce', plusmagiSiteSearch.nonce);
 				},
 				success: function (response) {
 					var buckets = { posts: [], categories: [], tags: [] };

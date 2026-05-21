@@ -1,8 +1,9 @@
-<?php return array(
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+return array(
 	'dependencies' => array(
 		'wp-blocks',
 		'wp-element',
-		'wp-editor',
 	),
-	'version' => '1.0.0',
+	'version' => '1.0.1',
 );

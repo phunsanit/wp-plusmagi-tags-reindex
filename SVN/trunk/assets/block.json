@@ -6,7 +6,7 @@
   "icon": "search",
   "description": "A custom search block for PlusMagi site search integration.",
   "keywords": ["search", "plusmagi", "site search"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "textdomain": "plusmagi-site-search",
   "editorScript": "file:./js/block.js",
   "style": "file:./css/search.css"

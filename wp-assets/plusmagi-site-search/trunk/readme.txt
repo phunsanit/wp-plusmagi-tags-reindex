@@ -2,58 +2,71 @@
 Contributors: phunsanit
 Tags: search, frontend, admin-search, post-search, role-based
 Requires at least: 5.8
-Tested up to: 6.9
+Tested up to: 6.9.4
 Requires PHP: 7.2
-Stable tag: 1.0.0
-License: MIT
-License URI: https://opensource.org/licenses/MIT
+Stable tag: 1.0.1
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License (secondary): MIT
+License URI (secondary): https://opensource.org/licenses/MIT
 Text Domain: plusmagi-site-search
 
-A WordPress plugin that enables detailed and powerful search capabilities for your site.
+Enhance your WordPress search with Ajax-powered live results, deep custom field indexing, and smart role-based access control.
 
 == Description ==
 
-PlusMagi Site Search is a powerful plugin that enhances your site's search functionality, allowing users to perform detailed searches across posts, categories, and tags with ease. It includes smart role-based access control and advanced filtering options.
+PlusMagi Site Search is a comprehensive search solution designed to replace the limited default WordPress search. It provides a fast, modern, and highly relevant search experience by indexing content that WordPress usually ignores, such as Custom Fields and Meta Data.
 
-= Features =
+Whether you are running a simple blog or a complex membership site, Smart Access Control ensures that search results are filtered based on the user's role. Editors see everything, while guests only see what is public.
 
-*   **Strict Access Control**:
-	*   Public Users: See only published content.
-	*   Authors: See their drafts/pending posts + all published content.
-	*   Editors/Admins: See all content (Drafts, Private, Future, etc.).
-*   **Deep Search**:
-	*   **Custom Fields**: Automatically searches post meta (e.g., SKUs, internal codes).
-	*   **Taxonomies**: Searches Categories and Tags alongside posts.
-*   **Search Prefixes**:
-	*   `post:` - Search specific pages/posts.
-	*   `tag:` - Search specific tags.
-	*   `category:` - Search specific categories.
-*   **Rich UI**:
-	*   **Tabs**: Results organized into "Posts", "Category", "Tag".
-	*   **Thumbnails**: Shows featured images if available.
-	*   **Theme Integration**: Inherits site colors automatically.
-*   **High Performance**: AJAX-powered, lightweight, no bloat.
-*   **Developer Friendly**: Simple shortcode `[plusmagi_search]` and Block support.
+== Features ==
 
-For more information, visit [https://pitt.plusmagi.com](https://pitt.plusmagi.com).
+*   **Ajax Live Search**: Instant search results with zero page refreshes.
+*   **Smart Access Control**: Filters results for Public, Authors, and Admins dynamically.
+*   **Deep Search Capability**:
+	*   Post Titles and Content.
+	*   Custom Fields (meta data like SKUs and internal codes).
+	*   Taxonomies (Categories and Tags).
+*   **Organized Search Results**: Results are grouped into Posts, Category, and Tag tabs.
+*   **Visual Enhancements**: Shows featured images (thumbnails) in the search dropdown.
+*   **Advanced Search Filters**: Use prefixes like `post:`, `tag:`, or `category:`.
+*   **Developer Friendly**: Supports shortcode `[plusmagi-site-search]` and Block Editor.
+*   **High Performance**: Optimized with lightweight Ajax calls.
+
+For more information, visit [https://plusmagi-site-search.plusmagi.com](https://plusmagi-site-search.plusmagi.com).
 
 == Installation ==
 
-1.  Upload the `plusmagi-site-search` directory to the `/wp-content/plugins/` directory.
-2.  Activate the plugin through the 'Plugins' menu in WordPress.
-3.  Place `[plusmagi_search]` in your page or post content.
+1.  Upload the `plusmagi-site-search` directory to `/wp-content/plugins/`.
+2.  Activate the plugin in the Plugins menu.
+3.  Add `[plusmagi-site-search]` to any page or post.
+4.  Optional (theme template): `<?php echo do_shortcode('[plusmagi-site-search]'); ?>`
 
 == Frequently Asked Questions ==
 
-= Can I customize the search results? =
+= Does it support Private Posts? =
 
-The search results are styled via CSS which you can override in your theme or custom CSS plugin.
+Yes, but only for users with the appropriate permissions (like Admins or Editors).
 
-= Is it free? =
+= Can it search WooCommerce SKUs? =
 
-Yes, this plugin is released under the MIT license.
+Yes. By enabling Custom Field search, it can index and find products by their SKU.
+
+= Does it slow down my site? =
+
+No, the plugin is optimized with lightweight Ajax calls to ensure high performance.
+
+== Screenshots ==
+
+1. Live search dropdown with categorized tabs (Posts, Category, Tag).
+2. Role-based visibility with secure result filtering.
+3. Frontend integration via shortcode and theme template.
 
 == Changelog ==
+
+= 1.0.1 =
+*   Documentation and shortcode usage updates.
+*   Improved readme alignment with project website content.
 
 = 1.0.0 =
 *   Initial release.

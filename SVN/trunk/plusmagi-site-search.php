@@ -3,7 +3,7 @@
  * Plugin Name: PlusMagi Site Search
  * Plugin URI:  https://plusmagi-site-search.plusmagi.com/
  * Description: A frontend search plugin that mimics the WordPress admin search functionality, with role-based access control.
- * Version:    1.0.0
+ * Version:    1.0.1
  * Author:     Pitt Phunsanit <phunsanit@gmail.com>, <phunsanit@plusmagi.com>
  * Author URI: https://pitt.plusmagi.com
  * License:    MIT
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PLUSMAGI_SITE_SEARCH_VERSION', '1.0.0');
+define('PLUSMAGI_SITE_SEARCH_VERSION', '1.0.1');
 define('PLUSMAGI_SITE_SEARCH_FILE', __FILE__);
 define('PLUSMAGI_SITE_SEARCH_URL', plugin_dir_url(__FILE__));
 define('PLUSMAGI_SITE_SEARCH_PATH', plugin_dir_path(__FILE__));

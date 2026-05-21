@@ -83,7 +83,7 @@ npm run test:ui
 
 | Area | What is tested |
 |------|---------------|
-| Widget | Input visible, scripts enqueued, `pmSearch` object defined |
+| Widget | Input visible, scripts enqueued, `plusmagiSiteSearch` object defined |
 | Debounce | No API request for queries shorter than 2 characters |
 | Search | Dropdown appears, tabs render, tab switching, click-outside closes |
 | Prefixes | `post:`, `tag:`, `category:` all trigger correct REST requests |
