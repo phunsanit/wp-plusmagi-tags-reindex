@@ -2,7 +2,7 @@
 Contributors: phunsanit
 Tags: search, frontend, admin-search, post-search, role-based
 Requires at least: 5.8
-Tested up to: 6.9.4
+Tested up to: 7.0
 Requires PHP: 7.2
 Stable tag: 1.0.1
 License: GPLv2 or later
