@@ -32,6 +32,7 @@ Whether you are running a simple blog or a complex membership site, Smart Access
 *   **Advanced Search Filters**: Use prefixes like `post:`, `tag:`, or `category:`.
 *   **Developer Friendly**: Supports shortcode `[plusmagi-site-search]` and Block Editor.
 *   **High Performance**: Optimized with lightweight Ajax calls.
+*   **WordPress 7.0 Ready**: Fully tested and optimized for WordPress 7.0 and PHP 7.4+.
 
 For more information, visit [https://plusmagi-site-search.plusmagi.com](https://plusmagi-site-search.plusmagi.com).
 
@@ -65,8 +66,10 @@ No, the plugin is optimized with lightweight Ajax calls to ensure high performan
 == Changelog ==
 
 = 1.0.1 =
-*   Documentation and shortcode usage updates.
-*   Improved readme alignment with project website content.
+*   Added WordPress 7.0 full compatibility and verified support.
+*   Fixed frontend Ajax search bug where the Nonce security token was named incorrectly.
+*   Fixed frontend search result tab switcher where clicking tabs failed to show the active state.
+*   Updated plugin documentation and metadata tags.
 
 = 1.0.0 =
 *   Initial release.
