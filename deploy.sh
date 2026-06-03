@@ -7,6 +7,7 @@ PM_ASSETS_SRC="./wp-assets"
 SVN_ROOT="./SVN"
 SVN_TRUNK="${SVN_ROOT}/trunk"
 SVN_ASSETS="${SVN_ROOT}/assets"
+SVN_TAGS="${SVN_ROOT}/tags"
 
 main() {
 	cd "$(dirname "$0")" || exit
@@ -41,10 +42,18 @@ main() {
 		[ -n "$missing_path" ] && svn rm "$missing_path"
 	done
 
+	# 4. Create Tag Automatically (idempotent)
+	if [ -d "tags/$VERSION" ]; then
+		echo "⏭️  Skip tag creation (already exists: tags/$VERSION)"
+	else
+		echo "🏷️  Creating SVN tag: tags/$VERSION"
+		svn copy trunk "tags/$VERSION"
+	fi
+
 	echo "---------------------------------------------------"
 	echo "✅ SVN staging complete!"
 	echo "📍 Path: $SVN_ROOT"
-	echo "👉 ขั้นตอนต่อไป: 'svn commit' และสร้าง 'tags/$VERSION' ตามลำดับ"
+	echo "👉 ขั้นตอนต่อไป: 'svn commit' (tag ถูกเตรียมไว้แล้วถ้ายังไม่มี)"
 	echo "---------------------------------------------------"
 }
 
