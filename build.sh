@@ -5,7 +5,7 @@ PLUGIN_SLUG="plusmagi-site-search"
 DISPLAY_NAME="plusmagi-site-search"
 SOURCE_DIR="./SVN/trunk"
 PM_ASSETS_DIR="./wp-assets"
-WEBSITE_BUILD_DIR="./Website/plusmagi-site-search.plusmagi.com/build"
+WEBSITE_BUILD_DIR="./Website/build"
 TEMP_DIR="temp_build"
 
 main() {
@@ -42,8 +42,13 @@ main() {
 	cp "$TEMP_DIR/${DISPLAY_NAME}.zip" "$PM_ASSETS_DIR/${DISPLAY_NAME}-${VERSION}.zip"
 	mv "$TEMP_DIR/${DISPLAY_NAME}.zip" "$WEBSITE_BUILD_DIR/${DISPLAY_NAME}-latest.zip"
 
+	VERSIONED_ZIP_PATH="$(pwd)/${PM_ASSETS_DIR#./}/${DISPLAY_NAME}-${VERSION}.zip"
+	LATEST_ZIP_PATH="$(pwd)/${WEBSITE_BUILD_DIR#./}/${DISPLAY_NAME}-latest.zip"
+
 	rm -rf "$TEMP_DIR"
 	echo "✅ Build Complete!"
+	echo "📦 Versioned zip: $VERSIONED_ZIP_PATH"
+	echo "📦 Latest zip: $LATEST_ZIP_PATH"
 }
 
 main

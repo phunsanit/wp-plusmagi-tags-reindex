@@ -3,7 +3,7 @@
  * Plugin Name: PlusMagi Site Search
  * Plugin URI:  https://plusmagi-site-search.plusmagi.com
  * Description: A frontend search plugin that mimics the WordPress admin search functionality, with role-based access control.
- * Version:    1.0.1
+ * Version:    1.0.2
  * Author:     Pitt Phunsanit <phunsanit@gmail.com>, <phunsanit@plusmagi.com>
  * Author URI: https://pitt.plusmagi.com
  * License:    MIT
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-define('PLUSMAGI_SITE_SEARCH_VERSION', '1.0.1');
+define('PLUSMAGI_SITE_SEARCH_VERSION', '1.0.2');
 define('PLUSMAGI_SITE_SEARCH_FILE', __FILE__);
 define('PLUSMAGI_SITE_SEARCH_URL', plugin_dir_url(__FILE__));
 define('PLUSMAGI_SITE_SEARCH_PATH', plugin_dir_path(__FILE__));
@@ -177,6 +177,15 @@ class Plusmagi_Site_Search
 		   ]);
 	   }
 
+	/**
+	 * Decode HTML entities in result text so frontend shows readable characters.
+	 */
+	private function decode_result_text($text)
+	{
+		$decoded = html_entity_decode((string) $text, ENT_QUOTES, 'UTF-8');
+		return wp_strip_all_tags($decoded);
+	}
+
 	public function handle_search($request)
 	{
 		$raw_term = sanitize_text_field($request['term']);
@@ -228,7 +237,7 @@ class Plusmagi_Site_Search
 					foreach ($terms as $term) {
 						$results[] = [
 							'id'			=> $term->term_id,
-							'title'		 => $term->name,
+							'title'		 => $this->decode_result_text($term->name),
 							'link'		  => get_term_link($term),
 							'status'		=> ucfirst($term->taxonomy === 'post_tag' ? 'Tag' : 'Category'),
 							'type'		  => 'term',
@@ -304,7 +313,7 @@ class Plusmagi_Site_Search
 
 					$results[] = [
 						'id'			 => $post_id,
-						'title'		  => get_the_title(),
+						'title'		  => $this->decode_result_text(get_the_title($post_id)),
 						'link'		   => get_permalink(),
 						'status'		 => $post_status,
 						'type'		   => 'post',

@@ -4,7 +4,7 @@ Tags: search, frontend, admin-search, post-search, role-based
 Requires at least: 5.8
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 License (secondary): MIT
@@ -65,7 +65,7 @@ No, the plugin is optimized with lightweight Ajax calls to ensure high performan
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.0.2 =
 *   Added WordPress 7.0 full compatibility and verified support.
 *   Fixed frontend Ajax search bug where the Nonce security token was named incorrectly.
 *   Fixed frontend search result tab switcher where clicking tabs failed to show the active state.
