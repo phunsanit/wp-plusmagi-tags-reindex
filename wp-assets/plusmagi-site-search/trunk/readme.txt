@@ -79,5 +79,5 @@ You can style the search interface with your theme or child theme CSS. The plugi
 *   Fixed frontend search result tab switcher where clicking tabs failed to show the active state.
 *   Updated plugin documentation and metadata tags.
 
-= 1.0.0 =
+= 1.0.2 =
 *   Initial release.

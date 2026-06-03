@@ -71,5 +71,5 @@ No, the plugin is optimized with lightweight Ajax calls to ensure high performan
 *   Fixed frontend search result tab switcher where clicking tabs failed to show the active state.
 *   Updated plugin documentation and metadata tags.
 
-= 1.0.0 =
+= 1.0.2 =
 *   Initial release.

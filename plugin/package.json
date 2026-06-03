@@ -1,0 +1,9 @@
+{
+  "name": "@plusmagi/plugin",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "bash ../build.sh",
+    "deploy": "bash ../deploy.sh"
+  }
+}
