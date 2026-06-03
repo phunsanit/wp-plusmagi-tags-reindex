@@ -14,14 +14,13 @@
     },
     {
       "step": "installPlugin",
-      "pluginZipFile": {
-        "resource": "url",
-        "url": "https://downloads.wordpress.org/plugin/plusmagi-site-search.zip"
+      "pluginData": {
+        "resource": "wordpress.org/plugins",
+        "slug": "plusmagi-site-search"
+      },
+      "options": {
+        "activate": true
       }
-    },
-    {
-      "step": "activatePlugin",
-      "pluginPath": "plusmagi-site-search/plusmagi-site-search.php"
     }
   ]
 }
