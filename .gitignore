@@ -22,3 +22,10 @@ yarn-error.log*
 
 # Local packaging artifacts
 plusmagi-site-search.plusmagi.com/build/
+
+# Release artifacts in wp-assets
+wp-assets/*.zip
+
+# Playwright generated test artifacts
+Playwright/playwright-report/
+Playwright/test-results/
