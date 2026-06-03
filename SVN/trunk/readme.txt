@@ -1,6 +1,6 @@
 === PlusMagi Site Search ===
 Contributors: phunsanit
-Tags: search, frontend, admin-search, post-search, role-based
+Tags: site search, ajax search, live search, custom fields search, woocommerce sku
 Requires at least: 5.8
 Tested up to: 7.0
 Requires PHP: 7.2
@@ -11,13 +11,17 @@ License (secondary): MIT
 License URI (secondary): https://opensource.org/licenses/MIT
 Text Domain: plusmagi-site-search
 
-Enhance your WordPress search with Ajax-powered live results, deep custom field indexing, and smart role-based access control.
+Replace the default WordPress search with fast Ajax live search, deeper custom fields indexing, and more relevant internal search results.
 
 == Description ==
 
-PlusMagi Site Search is a comprehensive search solution designed to replace the limited default WordPress search. It provides a fast, modern, and highly relevant search experience by indexing content that WordPress usually ignores, such as Custom Fields and Meta Data.
+Is the default WordPress search missing important content or slowing users down?
 
-Whether you are running a simple blog or a complex membership site, Smart Access Control ensures that search results are filtered based on the user's role. Editors see everything, while guests only see what is public.
+PlusMagi Site Search is a lightweight, high-performance search replacement built to improve internal search accuracy with Ajax live search, cleaner result presentation, and deeper indexing across posts, pages, categories, tags, and custom fields.
+
+It is especially useful for content-heavy websites, internal knowledge bases, membership sites, and WooCommerce stores that need visitors to find the right content quickly. Role-based filtering helps keep restricted results visible only to the right users, while public visitors get a fast and secure search experience.
+
+If you need a custom search plugin that goes beyond native WordPress search, PlusMagi Site Search helps surface hidden content, supports WooCommerce SKU-style metadata search, and keeps the search experience fast and easy to scan.
 
 == Features ==
 
@@ -38,30 +42,34 @@ For more information, visit [https://plusmagi-site-search.plusmagi.com](https://
 
 == Installation ==
 
-1.  Upload the `plusmagi-site-search` directory to `/wp-content/plugins/`.
-2.  Activate the plugin in the Plugins menu.
-3.  Add `[plusmagi-site-search]` to any page or post.
-4.  Optional (theme template): `<?php echo do_shortcode('[plusmagi-site-search]'); ?>`
+1.  Go to `Plugins > Add New` in WordPress, or download the plugin from `https://wordpress.org/plugins/plusmagi-site-search`.
+2.  Search for `PlusMagi Site Search`.
+3.  Click `Install Now`, then `Activate`.
+4.  Add the `PlusMagi Site Search` block or `[plusmagi-site-search]` shortcode to any page or post.
 
 == Frequently Asked Questions ==
 
-= Does it support Private Posts? =
+= Does it support Private Posts and Drafts? =
 
-Yes, but only for users with the appropriate permissions (like Admins or Editors).
+Yes. PlusMagi Site Search includes role-based filtering. Logged-in users with the right capabilities, such as Editors or Admins, can search private posts or drafts. Public visitors will only see content they are allowed to access.
 
 = Can it search WooCommerce SKUs? =
 
-Yes. By enabling Custom Field search, it can index and find products by their SKU.
+Yes. By searching custom fields and meta data, the plugin can surface WooCommerce products by SKU and other metadata that default WordPress search often misses.
 
-= Does it slow down my site? =
+= Does it slow down my website or server database? =
 
-No, the plugin is optimized with lightweight Ajax calls to ensure high performance.
+No. The plugin is designed to stay lightweight and uses optimized Ajax requests for live results without adding unnecessary analytics overhead.
+
+= How can I customize the look to match my theme? =
+
+You can style the search interface with your theme or child theme CSS. The plugin output uses standard markup and classes, so it is straightforward to adapt the dropdown and result layout to your site design.
 
 == Screenshots ==
 
-1. Live search dropdown with categorized tabs (Posts, Category, Tag).
-2. Role-based visibility with secure result filtering.
-3. Frontend integration via shortcode and theme template.
+1. Search widget embedded in a live site sidebar using the PlusMagi Site Search block.
+2. Ajax live search dropdown showing grouped results for Posts, Category, and Tag.
+3. Full live-site layout with the search widget integrated into a real sidebar.
 
 == Changelog ==
 
