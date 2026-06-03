@@ -20,6 +20,15 @@ const { test, expect } = require('@playwright/test');
 // IDs from render_shortcode() in plusmagi-site-search.php
 const SEARCH_INPUT   = '#plusmagi-site-search-input';
 const SEARCH_RESULTS = '#plusmagi-site-search-results';
+function tabSelector(tab) {
+    return `${SEARCH_RESULTS} .plusmagi-site-search-tab[data-tab="${tab}"], ${SEARCH_RESULTS} .plusmagi-tab[data-tab="${tab}"]`;
+}
+
+async function activateTab(page, tab) {
+    const tabEl = page.locator(tabSelector(tab));
+    await tabEl.waitFor({ state: 'visible', timeout: 10_000 });
+    await tabEl.dispatchEvent('mousedown');
+}
 
 // REST API — namespace matches register_rest_routes()
 const REST_SEARCH = '/wp-json/plusmagi-site-search/v1/search';
@@ -163,36 +172,40 @@ test.describe('PlusMagi Site Search — Tabs', () => {
         await page.waitForTimeout(DEBOUNCE_WAIT);
         // Ensure the dropdown is visible before tab tests
         await page.locator(SEARCH_RESULTS).waitFor({ state: 'visible', timeout: 10_000 });
+        await page.locator(tabSelector('posts')).waitFor({
+            state: 'visible',
+            timeout: 10_000,
+        });
     });
 
     test('Posts / Category / Tag tabs are rendered', async ({ page }) => {
-        await expect(page.locator('.plusmagi-site-search-tab[data-tab="posts"]')).toBeVisible();
-        await expect(page.locator('.plusmagi-site-search-tab[data-tab="categories"]')).toBeVisible();
-        await expect(page.locator('.plusmagi-site-search-tab[data-tab="tags"]')).toBeVisible();
+        await expect(page.locator(tabSelector('posts'))).toBeVisible();
+        await expect(page.locator(tabSelector('categories'))).toBeVisible();
+        await expect(page.locator(tabSelector('tags'))).toBeVisible();
     });
 
     test('Posts tab is active by default', async ({ page }) => {
-        await expect(page.locator('.plusmagi-site-search-tab[data-tab="posts"]')).toHaveClass(/active/);
-        await expect(page.locator('#tab-content-posts')).toBeVisible();
+        await expect(page.locator(tabSelector('posts'))).toHaveClass(/active/);
+        await expect(page.locator(`${SEARCH_RESULTS} #tab-content-posts`)).toBeVisible();
     });
 
     test('clicking Category tab shows category panel', async ({ page }) => {
-        await page.locator('.plusmagi-site-search-tab[data-tab="categories"]').click();
-        await expect(page.locator('#tab-content-categories')).toBeVisible();
-        await expect(page.locator('#tab-content-posts')).toBeHidden();
+        await activateTab(page, 'categories');
+        await expect(page.locator(`${SEARCH_RESULTS} #tab-content-categories`)).toBeVisible();
+        await expect(page.locator(`${SEARCH_RESULTS} #tab-content-posts`)).toBeHidden();
     });
 
     test('clicking Tag tab shows tag panel', async ({ page }) => {
-        await page.locator('.plusmagi-site-search-tab[data-tab="tags"]').click();
-        await expect(page.locator('#tab-content-tags')).toBeVisible();
-        await expect(page.locator('#tab-content-posts')).toBeHidden();
+        await activateTab(page, 'tags');
+        await expect(page.locator(`${SEARCH_RESULTS} #tab-content-tags`)).toBeVisible();
+        await expect(page.locator(`${SEARCH_RESULTS} #tab-content-posts`)).toBeHidden();
     });
 
     test('clicking Posts tab after switching restores posts panel', async ({ page }) => {
-        await page.locator('.plusmagi-site-search-tab[data-tab="categories"]').click();
-        await page.locator('.plusmagi-site-search-tab[data-tab="posts"]').click();
-        await expect(page.locator('#tab-content-posts')).toBeVisible();
-        await expect(page.locator('#tab-content-categories')).toBeHidden();
+        await activateTab(page, 'categories');
+        await activateTab(page, 'posts');
+        await expect(page.locator(`${SEARCH_RESULTS} #tab-content-posts`)).toBeVisible();
+        await expect(page.locator(`${SEARCH_RESULTS} #tab-content-categories`)).toBeHidden();
     });
 });
 
@@ -283,12 +296,13 @@ test.describe('PlusMagi Site Search — REST API', () => {
         }
     });
 
-    test('tag: prefix returns only tag/category-type items', async ({ request }) => {
+    test('tag: prefix returns term items from tag/category taxonomy', async ({ request }) => {
         const res = await request.get(`${REST_SEARCH}?term=tag%3AjQuery`);
         expect(res.status()).toBe(200);
         const items = await res.json();
         for (const item of items) {
-            expect(['category', 'tag']).toContain(item.type);
+            expect(item.type).toBe('term');
+            expect(['post_tag', 'category']).toContain(item.original_type);
         }
     });
 });
