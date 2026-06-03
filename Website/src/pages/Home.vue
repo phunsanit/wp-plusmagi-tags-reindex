@@ -34,7 +34,7 @@
             <a href="https://wordpress.org/plugins/plusmagi-site-search" target="_blank" rel="noopener noreferrer" class="bg-[#ff8f77] text-[#4b0700] px-10 py-4 font-bold tracking-tighter rounded-sm hover:bg-[#ffb4a4] transition-all active:scale-95">Get Started</a>
           </div>
           <img
-            src="/wp-assets/banner-1544x500.png"
+            :src="bannerImage"
             alt="PlusMagi Site Search banner"
             class="mt-10 w-full max-w-4xl rounded border border-[#3e4958] shadow-2xl shadow-[#e12a00]/20"
           />
@@ -163,6 +163,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import bannerImage from '../assets/banner-1544x500.png'
 
 const activePreviewTab = ref<'posts' | 'category' | 'tag'>('posts')
 
