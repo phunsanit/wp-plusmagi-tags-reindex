@@ -1,6 +1,7 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 /**
  * Playwright configuration for PlusMagi Site Search plugin tests.
@@ -8,7 +9,7 @@ const path = require('path');
  *
  * Run all guest tests:       npx playwright test
  * Run with UI:               npx playwright test --ui
- * Run admin/block tests:     WP_ADMIN_PASS=secret npx playwright test --project=admin
+ * Run admin/block tests:     npx playwright test --project=admin  (uses .env)
  * Show HTML report:          npx playwright show-report
  */
 
@@ -51,7 +52,7 @@ module.exports = defineConfig({
     projects: [
         // ------------------------------------------------------------------
         // Setup: log in to WP admin and save cookies for the admin project
-        // Run: WP_ADMIN_PASS=secret npx playwright test --project=setup
+        // Run: npx playwright test --project=setup  (uses .env)
         // ------------------------------------------------------------------
         {
             name: 'setup',

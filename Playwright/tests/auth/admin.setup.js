@@ -12,7 +12,7 @@ const STATE_PATH = path.resolve(__dirname, '../../auth/admin-state.json');
 
 setup('authenticate as WordPress admin', async ({ page }) => {
     const user = process.env.WP_ADMIN_USER || 'admin';
-    const pass = process.env.WP_ADMIN_PASS;
+    const pass = process.env.WP_ADMIN_PASSWORD || process.env.WP_ADMIN_PASS;
 
     if (!pass) {
         // If state file already exists, reuse it without re-logging in.
@@ -21,8 +21,8 @@ setup('authenticate as WordPress admin', async ({ page }) => {
             return;
         }
         throw new Error(
-            'WP_ADMIN_PASS environment variable is required for admin tests.\n' +
-            'Run: WP_ADMIN_PASS=yourpassword npx playwright test --project=setup'
+            'WP_ADMIN_PASSWORD environment variable is required for admin tests.\n' +
+            'Set WP_ADMIN_PASSWORD in .env or run: WP_ADMIN_PASSWORD=yourpassword npx playwright test --project=setup'
         );
     }
 

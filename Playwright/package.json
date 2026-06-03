@@ -10,6 +10,8 @@
     "test:firefox": "playwright test --project=firefox",
     "test:safari": "playwright test --project=webkit",
     "test:api": "playwright test --grep '@api'",
+    "test:admin": "playwright test --project=admin --workers=1",
+    "test:setup": "playwright test --project=setup",
     "report": "playwright show-report"
   },
   "keywords": [],
@@ -17,6 +19,7 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "@playwright/test": "^1.60.0"
+    "@playwright/test": "^1.60.0",
+    "dotenv": "^17.4.2"
   }
 }
