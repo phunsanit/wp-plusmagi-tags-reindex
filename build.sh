@@ -31,6 +31,7 @@ main() {
 	cp "$SOURCE_DIR/plusmagi-site-search.php" "$TEMP_DIR/$PLUGIN_SLUG/"
 	cp "$SOURCE_DIR/readme.txt" "$TEMP_DIR/$PLUGIN_SLUG/"
 	cp "$SOURCE_DIR/LICENSE" "$TEMP_DIR/$PLUGIN_SLUG/"
+	[ -f "$SOURCE_DIR/blueprint.json" ] && cp "$SOURCE_DIR/blueprint.json" "$TEMP_DIR/$PLUGIN_SLUG/"
 	[ -d "$SOURCE_DIR/assets" ] && cp -r "$SOURCE_DIR/assets" "$TEMP_DIR/$PLUGIN_SLUG/"
 
 	# 4. Create Zip

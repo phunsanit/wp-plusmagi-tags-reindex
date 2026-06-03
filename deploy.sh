@@ -18,6 +18,11 @@ main() {
 		exit 1
 	fi
 
+	if [ ! -f "$SOURCE_DIR/blueprint.json" ]; then
+		echo "❌ Error: Missing $SOURCE_DIR/blueprint.json"
+		exit 1
+	fi
+
 	REPO_ROOT="$(pwd)"
 
 	echo "📦 Preparing SVN for version: $VERSION"
