@@ -18,6 +18,8 @@ main() {
 		exit 1
 	fi
 
+	REPO_ROOT="$(pwd)"
+
 	echo "📦 Preparing SVN for version: $VERSION"
 
 	# 1. Sync SourceCode -> Trunk
@@ -50,8 +52,24 @@ main() {
 		svn copy trunk "tags/$VERSION"
 	fi
 
+	# 5. Create/push Git tag from plugin version (idempotent)
+	cd "$REPO_ROOT" || exit
+	if git show-ref --verify --quiet "refs/tags/$VERSION"; then
+		echo "⏭️  Skip local git tag creation (already exists: $VERSION)"
+	else
+		echo "🏷️  Creating git tag: $VERSION"
+		git tag -a "$VERSION" -m "Release $VERSION"
+	fi
+
+	if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" >/dev/null 2>&1; then
+		echo "⏭️  Skip pushing git tag (already on origin: $VERSION)"
+	else
+		echo "🚀 Pushing git tag to origin: $VERSION"
+		git push origin "$VERSION"
+	fi
+
 	echo "---------------------------------------------------"
-	echo "✅ SVN staging complete!"
+	echo "✅ SVN + Git tag staging complete!"
 	echo "📍 Path: $SVN_ROOT"
 	echo "👉 ขั้นตอนต่อไป: 'svn commit' (tag ถูกเตรียมไว้แล้วถ้ายังไม่มี)"
 	echo "---------------------------------------------------"
