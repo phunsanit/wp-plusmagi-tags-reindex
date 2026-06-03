@@ -38,10 +38,10 @@ For more information, visit [https://plusmagi-site-search.plusmagi.com](https://
 
 == Installation ==
 
-1.  Upload the `plusmagi-site-search` directory to `/wp-content/plugins/`.
-2.  Activate the plugin in the Plugins menu.
-3.  Add `[plusmagi-site-search]` to any page or post.
-4.  Optional (theme template): `<?php echo do_shortcode('[plusmagi-site-search]'); ?>`
+1.  Go to `Plugins > Add New` in WordPress.
+2.  Search for `PlusMagi Site Search`.
+3.  Click `Install Now`, then `Activate`.
+4.  Add the `PlusMagi Site Search` block or `[plusmagi-site-search]` shortcode to any page or post.
 
 == Frequently Asked Questions ==
 
