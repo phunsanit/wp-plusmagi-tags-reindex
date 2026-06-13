@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # --- Configuration ---
-PLUGIN_SLUG="plusmagi-site-search"
-DISPLAY_NAME="plusmagi-site-search"
+PLUGIN_SLUG="plusmagi-tags-reindex"
+DISPLAY_NAME="plusmagi-tags-reindex"
 SOURCE_DIR="./SVN/trunk"
 PM_ASSETS_DIR="./wp-assets"
 WEBSITE_BUILD_DIR="./Website/build"
@@ -12,10 +12,10 @@ main() {
 	cd "$(dirname "$0")" || exit
 
 	# 1. ดึง Version จาก trunk
-	VERSION=$(grep -i "Version:" "$SOURCE_DIR/plusmagi-site-search.php" | awk -F: '{print $2}' | xargs)
+	VERSION=$(grep -i "Version:" "$SOURCE_DIR/plusmagi-tags-reindex.php" | awk -F: '{print $2}' | xargs)
 
 	if [ -z "$VERSION" ]; then
-		echo "❌ Error: Could not find version in $SOURCE_DIR/plusmagi-site-search.php"
+		echo "❌ Error: Could not find version in $SOURCE_DIR/plusmagi-tags-reindex.php"
 		exit 1
 	fi
 
@@ -28,7 +28,7 @@ main() {
 	mkdir -p "$TEMP_DIR/$PLUGIN_SLUG"
 
 	# 3. Copy files (ไม่เอา README.md ของ Git เข้าไปในปลั๊กอิน)
-	cp "$SOURCE_DIR/plusmagi-site-search.php" "$TEMP_DIR/$PLUGIN_SLUG/"
+	cp "$SOURCE_DIR/plusmagi-tags-reindex.php" "$TEMP_DIR/$PLUGIN_SLUG/"
 	cp "$SOURCE_DIR/readme.txt" "$TEMP_DIR/$PLUGIN_SLUG/"
 	cp "$SOURCE_DIR/LICENSE" "$TEMP_DIR/$PLUGIN_SLUG/"
 	[ -f "$SOURCE_DIR/blueprint.json" ] && cp "$SOURCE_DIR/blueprint.json" "$TEMP_DIR/$PLUGIN_SLUG/"

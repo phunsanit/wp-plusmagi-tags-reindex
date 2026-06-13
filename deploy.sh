@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # --- Configuration ---
-PM_ORG_SLUG="plusmagi-site-search"
+PM_ORG_SLUG="plusmagi-tags-reindex"
 SOURCE_DIR="./SVN/trunk"
 PM_ASSETS_SRC="./wp-assets"
 SVN_ROOT="./SVN"
@@ -12,9 +12,9 @@ SVN_TAGS="${SVN_ROOT}/tags"
 main() {
 	cd "$(dirname "$0")" || exit
 
-	VERSION=$(grep -i "Version:" "$SOURCE_DIR/plusmagi-site-search.php" | awk -F: '{print $2}' | xargs)
+	VERSION=$(grep -i "Version:" "$SOURCE_DIR/plusmagi-tags-reindex.php" | awk -F: '{print $2}' | xargs)
 	if [ -z "$VERSION" ]; then
-		echo "❌ Error: Could not find version in $SOURCE_DIR/plusmagi-site-search.php"
+		echo "❌ Error: Could not find version in $SOURCE_DIR/plusmagi-tags-reindex.php"
 		exit 1
 	fi
 
