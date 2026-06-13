@@ -26,14 +26,15 @@ setup('authenticate as WordPress admin', async ({ page }) => {
         );
     }
 
-    await page.goto('/wp-login.php', { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    await page.goto('/wp-login.php', { waitUntil: 'domcontentloaded', timeout: 60_000 });
 
     await page.locator('#user_login').fill(user);
     await page.locator('#user_pass').fill(pass);
-    await page.locator('#wp-submit').click();
+    await page.locator('#wp-submit').click({ timeout: 60_000 });
 
-    await page.waitForURL('**/wp-admin/**', { timeout: 20_000 });
-    await expect(page.locator('#wpadminbar')).toBeVisible();
+    // รอดูว่ามีแถบ Admin Bar สีดำด้านบนโผล่ขึ้นมาหรือไม่ (รอสูงสุด 60 วินาที)
+    // วิธีนี้ครอบคลุมทั้งกรณีที่เว็บ Redirect เข้าหลังบ้าน หรือเด้งไปหน้าแรก
+    await expect(page.locator('#wpadminbar')).toBeVisible({ timeout: 60_000 });
 
     await page.context().storageState({ path: STATE_PATH });
 });

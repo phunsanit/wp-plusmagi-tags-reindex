@@ -4,7 +4,7 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 /**
- * Playwright configuration for PlusMagi Site Search plugin tests.
+ * Playwright configuration for PlusMagi Tags Reindex plugin tests.
  * Target: https://pitt.plusmagi.com  (live WordPress site with plugin installed)
  *
  * Run all guest tests:       npx playwright test
@@ -17,7 +17,7 @@ const ADMIN_STATE = path.join(__dirname, 'auth/admin-state.json');
 
 module.exports = defineConfig({
     testDir: './tests',
-    timeout: 60_000,
+    timeout: 600_000,
 
     /* Retry once on CI, never locally */
     retries: process.env.CI ? 1 : 0,
@@ -35,9 +35,9 @@ module.exports = defineConfig({
     use: {
         baseURL: 'https://pitt.plusmagi.com',
 
-        /* Allow up to 60s for any navigation on this ad-heavy live site */
-        navigationTimeout: 60_000,
-        actionTimeout: 15_000,
+        /* Allow up to 10 minutes for any navigation on this ad-heavy live site */
+        navigationTimeout: 600_000,
+        actionTimeout: 30_000,
 
         /* Capture screenshot only on failure */
         screenshot: 'only-on-failure',
@@ -65,17 +65,17 @@ module.exports = defineConfig({
         // ------------------------------------------------------------------
         {
             name: 'chromium',
-            testIgnore: /block\.spec\.js/,
+            testIgnore: /(tags-reindex|block-tags)\.spec\.js/,
             use: { ...devices['Desktop Chrome'] },
         },
         {
             name: 'firefox',
-            testIgnore: /block\.spec\.js/,
+            testIgnore: /(tags-reindex|block-tags)\.spec\.js/,
             use: { ...devices['Desktop Firefox'] },
         },
         {
             name: 'webkit',
-            testIgnore: /block\.spec\.js/,
+            testIgnore: /(tags-reindex|block-tags)\.spec\.js/,
             use: { ...devices['Desktop Safari'] },
         },
 
@@ -85,7 +85,7 @@ module.exports = defineConfig({
         // ------------------------------------------------------------------
         {
             name: 'admin',
-            testMatch: /block\.spec\.js/,
+            testMatch: /(tags-reindex|block-tags)\.spec\.js/,
             dependencies: ['setup'],
             use: {
                 ...devices['Desktop Chrome'],
