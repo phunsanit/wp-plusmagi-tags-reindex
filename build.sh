@@ -4,8 +4,14 @@
 # Usage: ./build.sh <PLUGIN_SLUG> OR just run ./build.sh if slug is in .env
 # =========================================================
 
+<<<<<<< HEAD
 # --- Configuration Variables ---
 DEFAULT_PLUGIN_SLUG="plusmagi" # Default fallback
+=======
+# --- Configuration ---
+PLUGIN_SLUG="plusmagi-tags-reindex"
+DISPLAY_NAME="plusmagi-tags-reindex"
+>>>>>>> e40aebfefcd5b7e585a5c97702702a75849a8046
 SOURCE_DIR="./SVN/trunk"
 PM_ASSETS_DIR="./wp-assets"
 WEBSITE_BUILD_DIR="./Website/build"
@@ -15,6 +21,7 @@ main() {
 	# กลับมาที่ไดเรกทอรีของสคริปต์ป้องกัน Path เพี้ยน
 	cd "$(dirname "$0")" || exit
 
+<<<<<<< HEAD
 	# Initialize variables with defaults
 	PLUGIN_SLUG=$DEFAULT_PLUGIN_SLUG
 	DISPLAY_NAME=$DEFAULT_PLUGIN_SLUG
@@ -54,6 +61,13 @@ main() {
 	# Final validation after all loading steps
 	if [ -z "$PLUGIN_SLUG" ]; then
 		echo "❌ Error: Could not determine a valid PLUGIN SLUG from any source."
+=======
+	# 1. ดึง Version จาก trunk
+	VERSION=$(grep -i "Version:" "$SOURCE_DIR/plusmagi-tags-reindex.php" | awk -F: '{print $2}' | xargs)
+
+	if [ -z "$VERSION" ]; then
+		echo "❌ Error: Could not find version in $SOURCE_DIR/plusmagi-tags-reindex.php"
+>>>>>>> e40aebfefcd5b7e585a5c97702702a75849a8046
 		exit 1
 	fi
 
@@ -81,6 +95,7 @@ main() {
 	rm -rf "$temp_dir"
 	mkdir -p "$temp_dir/$PLUGIN_SLUG"
 
+<<<<<<< HEAD
 	# 3. Copy files
 	echo "-> Copying core files..."
 	cp "$TARGET_PHP_FILE" "$temp_dir/$PLUGIN_SLUG/"
@@ -88,6 +103,14 @@ main() {
 	[ -f "$SOURCE_DIR/LICENSE" ] && cp "$SOURCE_DIR/LICENSE" "$temp_dir/$PLUGIN_SLUG/"
 	[ -f "$SOURCE_DIR/blueprint.json" ] && cp "$SOURCE_DIR/blueprint.json" "$temp_dir/$PLUGIN_SLUG/"
 	[ -d "$SOURCE_DIR/assets" ] && cp -r "$SOURCE_DIR/assets" "$temp_dir/$PLUGIN_SLUG/"
+=======
+	# 3. Copy files (ไม่เอา README.md ของ Git เข้าไปในปลั๊กอิน)
+	cp "$SOURCE_DIR/plusmagi-tags-reindex.php" "$TEMP_DIR/$PLUGIN_SLUG/"
+	cp "$SOURCE_DIR/readme.txt" "$TEMP_DIR/$PLUGIN_SLUG/"
+	cp "$SOURCE_DIR/LICENSE" "$TEMP_DIR/$PLUGIN_SLUG/"
+	[ -f "$SOURCE_DIR/blueprint.json" ] && cp "$SOURCE_DIR/blueprint.json" "$TEMP_DIR/$PLUGIN_SLUG/"
+	[ -d "$SOURCE_DIR/assets" ] && cp -r "$SOURCE_DIR/assets" "$TEMP_DIR/$PLUGIN_SLUG/"
+>>>>>>> e40aebfefcd5b7e585a5c97702702a75849a8046
 
 	# 4. Create Zip
 	echo "-> Creating zip archive..."
