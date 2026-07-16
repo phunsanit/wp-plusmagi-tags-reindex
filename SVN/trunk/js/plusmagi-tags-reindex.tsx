@@ -10,16 +10,13 @@
 import { registerPlugin } from '@wordpress/plugins';
 import { PluginDocumentSettingPanel } from '@wordpress/editor';
 import { useState, useEffect } from '@wordpress/element';
-import { TextControl, Button, Dashicon } from '@wordpress/components';
+import { TextControl, Button, Dashicon, ToggleControl, PanelBody } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import { __, sprintf } from '@wordpress/i18n';
 
-/**
- * ============================================================================
- * 📋 TYPE DEFINITIONS & INTERFACES
- * ============================================================================
- */
+// ... (Interface definitions เหมือนเดิม)
+
 interface TermStats {
 	id: number;
 	name: string;
@@ -44,20 +41,14 @@ interface PHPGlobalConfig {
 	reindexEnabled: boolean;
 }
 
-// Extend global window object to declare custom property configurations safely
 declare global {
 	interface Window {
 		plusmagiTagsEditorConfig?: PHPGlobalConfig;
 	}
 }
 
-/**
- * ============================================================================
- * 💡 LOGIC LAYER: DATA FETCHING UTILITY (Separation of Concerns)
- * ============================================================================
- * Dispatches a REST API fetch to aggregate taxonomy relationship stats.
- * This function handles API side-effects asynchronously outside the core UI layout.
- */
+// ... (fetchTagsWithStats function เหมือนเดิม)
+
 const fetchTagsWithStats = (
 	tagIds: number[],
 	setStatsMap: React.Dispatch<React.SetStateAction<StatsMap>>,
@@ -91,19 +82,13 @@ const fetchTagsWithStats = (
 		});
 };
 
-/**
- * ============================================================================
- * 📊 UI LAYER: CORE PANEL COMPONENT (Houkoku - Status Report Framework)
- * ============================================================================
- * Renders an administrative widget inside the Gutenberg Document Sidebar.
- * It features continuous real-time status notifications and asynchronous bulk injection.
- */
 const PlusMagiTagsPanel: React.FC = () => {
 	const [inputValue, setInputValue] = useState<string>('');
 	const [statsMap, setStatsMap] = useState<StatsMap>({});
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isReindexPanelOpen, setIsReindexPanelOpen] = useState<boolean>(false);
+	const [reindexMode, setReindexMode] = useState<boolean>(true);
 
-	// 1. Core State Selectors from the WordPress global store with concrete typing mapping
 	const { tagIds, currentPostId } = useSelect((select) => {
 		const editor = select('core/editor');
 		return {
@@ -113,19 +98,14 @@ const PlusMagiTagsPanel: React.FC = () => {
 	}, []);
 
 	const { editPost } = useDispatch('core/editor');
-
-	// ✅ NEW: Get removeEditorPanel to hide the default WordPress Tags sidebar panel
 	const { removeEditorPanel } = useDispatch('core/edit-post');
 
-	// ✅ NEW: Remove the default taxonomy panel for post_tag on mount
 	useEffect(() => {
 		removeEditorPanel('taxonomy-panel-post_tag');
 	}, [removeEditorPanel]);
 
-	// Load static system configuration passed down from the localized PHP ecosystem
 	const config: PHPGlobalConfig = window.plusmagiTagsEditorConfig || { statusLabels: {}, reindexEnabled: true };
 
-	// 2. Continuous Synchronization Trigger for tag stats evaluation with tracking cleanup
 	useEffect(() => {
 		const holder: ComponentHolder = { isMounted: true };
 		fetchTagsWithStats(tagIds, setStatsMap, setIsLoading, holder);
@@ -134,7 +114,30 @@ const PlusMagiTagsPanel: React.FC = () => {
 		};
 	}, [tagIds.join(','), currentPostId]);
 
-	// 3. Action Handlers for mutating data attributes
+	// ✅ คำนวณสถิติรวม
+	const calculateTotals = (): { total: number; published: number; future: number; draft: number; newTags: number } => {
+		const totals = { total: 0, published: 0, future: 0, draft: 0, newTags: 0 };
+
+		tagIds.forEach((id) => {
+			const term = statsMap[id];
+			if (term) {
+				totals.published += term.published;
+				totals.future += term.future;
+				totals.draft += term.draft;
+				if (term.all === 0) {
+					totals.newTags += 1;
+				}
+			} else {
+				totals.newTags += 1;
+			}
+		});
+
+		totals.total = tagIds.length;
+		return totals;
+	};
+
+	const totals = calculateTotals();
+
 	const handleAddTags = (): void => {
 		if (!inputValue.trim()) return;
 
@@ -145,7 +148,6 @@ const PlusMagiTagsPanel: React.FC = () => {
 		})
 			.then((response) => {
 				if (response && response.ids) {
-					// Deduplicate and combine newly generated IDs safely using a Set sequence
 					const combinedIds = Array.from(new Set([...tagIds, ...response.ids]));
 					editPost({ tags: combinedIds });
 					setInputValue('');
@@ -161,34 +163,40 @@ const PlusMagiTagsPanel: React.FC = () => {
 		editPost({ tags: updatedIds });
 	};
 
+	const handleReindexToggle = (value: boolean): void => {
+		setReindexMode(value);
+		// TODO: ส่งค่าไปยัง backend เพื่ออัปเดตการตั้งค่า
+		console.log('[PlusMagi Tags Reindex] Reindex Mode:', value);
+	};
+
+// ... (ส่วนบนคงเดิม)
+
 	return (
 		<PluginDocumentSettingPanel
 			name="plusmagi-tags-reindex-panel"
 			title={__('PlusMagi Tags Reindex', 'plusmagi-tags-reindex')}
 			className="plusmagi-tags-reindex-panel"
 		>
-			{/* 📢 STATUS REPORTING BAR: Instant visual disclosure of backend logic mode */}
-			<div
-				style={{
-					marginBottom: '15px',
-					padding: '10px',
-					borderRadius: '4px',
-					backgroundColor: config.reindexEnabled ? '#e7f4ec' : '#f0f0f0',
-					borderLeft: `4px solid ${config.reindexEnabled ? '#46b450' : '#cccccc'}`
-				}}
-			>
-				<strong style={{ color: config.reindexEnabled ? '#236c35' : '#666666', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}>
-					<Dashicon icon="admin-settings" />
-					{config.reindexEnabled
-						? __('Gap Filling Mode: Active (Reusing Term IDs)', 'plusmagi-tags-reindex')
-						: __('WordPress Standard Mode: Active', 'plusmagi-tags-reindex')
-					}
-				</strong>
+			{/* Summary Section */}
+			<div className="plusmagi-tags-summary">
+				<div className="plusmagi-tags-summary__title">
+					{__('Summaries', 'plusmagi-tags-reindex')}
+				</div>
+				<div className="plusmagi-tags-summary__stats">
+					{sprintf(
+						__('Total Tags: %1$d | Published: %2$d | Future: %3$d | Draft: %4$d | New: %5$d', 'plusmagi-tags-reindex'),
+						totals.total,
+						totals.published,
+						totals.future,
+						totals.draft,
+						totals.newTags
+					)}
+				</div>
 			</div>
 
-			{/* BULK TAG INTERACTION CONSOLE */}
-			<div style={{ display: 'flex', gap: '8px', alignItems: 'flex-end', marginBottom: '20px' }}>
-				<div style={{ flexGrow: 1 }}>
+			{/* Bulk Tag Input */}
+			<div className="plusmagi-tags-input">
+				<div className="plusmagi-tags-input__field">
 					<TextControl
 						label={__('Add Tags (Comma separated)', 'plusmagi-tags-reindex')}
 						value={inputValue}
@@ -197,26 +205,49 @@ const PlusMagiTagsPanel: React.FC = () => {
 						__nextHasNoMarginBottom
 					/>
 				</div>
-				<Button variant="primary" onClick={handleAddTags} style={{ height: '30px' }}>
+				<Button variant="primary" onClick={handleAddTags} className="plusmagi-tags-input__button">
 					{__('Add', 'plusmagi-tags-reindex')}
 				</Button>
 			</div>
 
-			{/* REAL-TIME AUDIT SUMMARY REPORTING LIST */}
+			{/* Reindex Options Panel */}
+			<PanelBody
+				title={__('Tags Reindex Options', 'plusmagi-tags-reindex')}
+				initialOpen={isReindexPanelOpen}
+				onToggle={() => setIsReindexPanelOpen(!isReindexPanelOpen)}
+			>
+				<ToggleControl
+					label={__('Enable Gap Filling Mode', 'plusmagi-tags-reindex')}
+					help={__('Reuse term IDs from deleted tags to prevent database bloat', 'plusmagi-tags-reindex')}
+					checked={reindexMode}
+					onChange={handleReindexToggle}
+				/>
+
+				<div className="plusmagi-reindex-status">
+					<strong>{__('Current Status:', 'plusmagi-tags-reindex')}</strong>
+					<div>
+						{reindexMode
+							? __('✓ Gap Filling: Active', 'plusmagi-tags-reindex')
+							: __('○ Standard Mode: Active', 'plusmagi-tags-reindex')
+						}
+					</div>
+				</div>
+			</PanelBody>
+
+			{/* Current Tags List - ✅ เพิ่ม class และจำกัดความสูง */}
 			<div className="plusmagi-tags-list">
-				<p style={{ fontWeight: '600', marginBottom: '8px', fontSize: '13px' }}>
+				<p className="plusmagi-tags-list__title">
 					{__('Current Tags & Usage Statistics:', 'plusmagi-tags-reindex')}
-					{isLoading && <span style={{ marginLeft: '8px', fontWeight: 'normal', color: '#666' }}>({__('Updating...', 'plusmagi-tags-reindex')})</span>}
+					{isLoading && <span className="plusmagi-tags-list__loading">({__('Updating...', 'plusmagi-tags-reindex')})</span>}
 				</p>
 
 				{tagIds.length === 0 ? (
-					<p style={{ color: '#666', fontStyle: 'italic', fontSize: '12px' }}>
+					<p className="plusmagi-tags-list__empty">
 						{__('No tags assigned to this post.', 'plusmagi-tags-reindex')}
 					</p>
 				) : (
-					<ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+					<ul className="plusmagi-tags-list__items">
 						{tagIds.map((id: number) => {
-							// 💡 Provide a fully-typed Fallback Object conforming strictly to the TermStats interface
 							const term: TermStats = statsMap[id] || {
 								id: id,
 								name: `ID: ${id}`,
@@ -229,20 +260,10 @@ const PlusMagiTagsPanel: React.FC = () => {
 							};
 
 							return (
-								<li
-									key={id}
-									style={{
-										display: 'flex',
-										justifyContent: 'space-between',
-										alignItems: 'center',
-										padding: '8px 0',
-										borderBottom: '1px solid #eee',
-										gap: '10px'
-									}}
-								>
-									<div style={{ flexGrow: 1 }}>
-										<div style={{ fontWeight: '500', color: '#1e1e1e', fontSize: '13px' }}>{term.name}</div>
-										<div style={{ fontSize: '11px', color: '#666', marginTop: '2px' }}>
+								<li key={id} className="plusmagi-tags-list__item">
+									<div className="plusmagi-tags-list__info">
+										<div className="plusmagi-tags-list__name">{term.name}</div>
+										<div className="plusmagi-tags-list__stats">
 											{sprintf(
 												__('Total usage: %1$d | Published: %2$d | Future: %3$d | Draft: %4$d', 'plusmagi-tags-reindex'),
 												term.all,
@@ -253,14 +274,13 @@ const PlusMagiTagsPanel: React.FC = () => {
 										</div>
 									</div>
 
-									{/* Individual Term Disconnection Interconnector */}
 									<Button
 										variant="link"
 										isDestructive
 										onClick={() => handleRemoveTag(id)}
-										style={{ padding: 0, minWidth: 'auto', height: 'auto' }}
+										className="plusmagi-tags-list__remove"
 									>
-										<Dashicon icon="dismiss" style={{ color: '#cc1818' }} />
+										<Dashicon icon="dismiss" />
 									</Button>
 								</li>
 							);
@@ -272,7 +292,6 @@ const PlusMagiTagsPanel: React.FC = () => {
 	);
 };
 
-// Bind the refactored module inside Gutenberg plugin architecture
 registerPlugin('plusmagi-tags-reindex', {
 	render: PlusMagiTagsPanel,
 	icon: 'admin-settings',

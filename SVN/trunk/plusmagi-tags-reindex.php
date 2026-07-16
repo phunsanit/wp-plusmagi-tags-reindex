@@ -52,8 +52,16 @@ class Plusmagi_Tags_Reindex {
 		$script_file = plugin_dir_path(__FILE__) . 'js/plusmagi-tags-reindex.js';
 		$script_ver  = file_exists($script_file) ? filemtime($script_file) : '1.0.0';
 
+		// ✅ Enqueue CSS
+		wp_enqueue_style(
+			'plusmagi-tags-reindex',
+			plugin_dir_url(__FILE__) . 'css/plusmagi-tags-reindex.css',
+			array(),
+			$script_ver
+		);
+
 		wp_enqueue_script(
-			'plusmagi-plusmagi-tags-reindex',
+			'plusmagi-tags-reindex',
 			plugin_dir_url(__FILE__) . 'js/plusmagi-tags-reindex.js',
 			['wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-data', 'wp-api-fetch', 'wp-core-data', 'wp-dom-ready', 'wp-i18n'],
 			$script_ver,
@@ -61,7 +69,7 @@ class Plusmagi_Tags_Reindex {
 		);
 
 		wp_localize_script(
-			'plusmagi-plusmagi-tags-reindex',
+			'plusmagi-tags-reindex',
 			'plusmagiTagsEditorConfig',
 			[
 				'statusLabels' => [
@@ -75,7 +83,7 @@ class Plusmagi_Tags_Reindex {
 		);
 
 		wp_set_script_translations(
-			'plusmagi-plusmagi-tags-reindex',
+			'plusmagi-tags-reindex',
 			'plusmagi-tags-reindex',
 			plugin_dir_path(__FILE__) . 'languages'
 		);

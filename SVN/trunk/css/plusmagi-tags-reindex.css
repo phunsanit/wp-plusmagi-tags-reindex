@@ -1,0 +1,194 @@
+/**
+ * PlusMagi Tags Reindex - Admin Styles
+ */
+
+/* Status Bar */
+.plusmagi-tags-status {
+	margin-bottom: 15px;
+	padding: 10px;
+	border-radius: 4px;
+	border-left: 4px solid;
+}
+
+.plusmagi-tags-status--active {
+	background-color: #e7f4ec;
+	border-color: #46b450;
+}
+
+.plusmagi-tags-status--active strong {
+	color: #236c35;
+}
+
+.plusmagi-tags-status--inactive {
+	background-color: #f0f0f0;
+	border-color: #cccccc;
+}
+
+.plusmagi-tags-status--inactive strong {
+	color: #666666;
+}
+
+.plusmagi-tags-status__icon {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+}
+
+/* Summary Section */
+.plusmagi-tags-summary {
+	margin-bottom: 20px;
+	padding: 12px;
+	background-color: #f8f9fa;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+}
+
+.plusmagi-tags-summary__title {
+	font-weight: 600;
+	margin-bottom: 8px;
+	font-size: 13px;
+	color: #1e1e1e;
+}
+
+.plusmagi-tags-summary__stats {
+	font-size: 12px;
+	color: #555;
+}
+
+/* Tag Input Section */
+.plusmagi-tags-input {
+	display: flex;
+	gap: 8px;
+	align-items: flex-end;
+	margin-bottom: 20px;
+}
+
+.plusmagi-tags-input__field {
+	flex-grow: 1;
+}
+
+.plusmagi-tags-input__button {
+	height: 30px;
+}
+
+/* Reindex Status */
+.plusmagi-reindex-status {
+	margin-top: 15px;
+	padding: 10px;
+	background-color: #f0f0f0;
+	border-radius: 4px;
+	font-size: 11px;
+}
+
+/* Tags List - ✅ จำกัดความสูงและเพิ่ม scroll */
+.plusmagi-tags-list {
+	margin-top: 20px;
+}
+
+.plusmagi-tags-list__title {
+	font-weight: 600;
+	margin-bottom: 8px;
+	font-size: 13px;
+}
+
+.plusmagi-tags-list__loading {
+	margin-left: 8px;
+	font-weight: normal;
+	color: #666;
+}
+
+.plusmagi-tags-list__empty {
+	color: #666;
+	font-style: italic;
+	font-size: 12px;
+}
+
+/* ✅ Container สำหรับ tag items - จำกัดความสูง */
+.plusmagi-tags-list__items {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	max-height: 500px; /* ✅ จำกัดความสูงที่ 500px */
+	overflow-y: auto; /* ✅ แสดง scroll แนวตั้ง */
+	border: 1px solid #eee;
+	border-radius: 4px;
+}
+
+/* Tag Item */
+.plusmagi-tags-list__item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 12px;
+	border-bottom: 1px solid #eee;
+	gap: 10px;
+}
+
+.plusmagi-tags-list__item:last-child {
+	border-bottom: none;
+}
+
+.plusmagi-tags-list__item:hover {
+	background-color: #f9f9f9;
+}
+
+.plusmagi-tags-list__info {
+	flex-grow: 1;
+}
+
+.plusmagi-tags-list__name {
+	font-weight: 500;
+	color: #1e1e1e;
+	font-size: 13px;
+}
+
+.plusmagi-tags-list__stats {
+	font-size: 11px;
+	color: #666;
+	margin-top: 2px;
+}
+
+.plusmagi-tags-list__remove {
+	padding: 0;
+	min-width: auto;
+	height: auto;
+}
+
+.plusmagi-tags-list__remove .dashicon {
+	color: #cc1818;
+}
+
+/* Scrollbar Styling (Optional) */
+.plusmagi-tags-list__items::-webkit-scrollbar {
+	width: 8px;
+}
+
+.plusmagi-tags-list__items::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 4px;
+}
+
+.plusmagi-tags-list__items::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 4px;
+}
+
+.plusmagi-tags-list__items::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+	.plusmagi-tags-input {
+		flex-direction: column;
+	}
+
+	.plusmagi-tags-input__field {
+		width: 100%;
+	}
+
+	.plusmagi-tags-input__button {
+		width: 100%;
+	}
+}
