@@ -1,15 +1,13 @@
 === PlusMagi Tags Reindex ===
-Contributors: phunsanit
-Tags: tags, taxonomy, term id, reindex, gutenberg, gap fill
+Contributors: plusmagi
+Tags: tags, reindex, database, gutenberg, bulk import
 Requires at least: 6.0
-Tested up to: 6.8
-Requires PHP: 7.4
+Tested up to: 7.0
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: plusmagi-tags-reindex
 
-Insert and manage post tags with smart ID gap filling and duplicate protection.
+Intelligently manage post tags, recycle unused term IDs safely, and enhance the Gutenberg tags panel.
 
 == Description ==
 
