@@ -15,5 +15,8 @@
 	"workspaces": [
 		"plugin",
 		"Website"
-	]
+	],
+	"dependencies": {
+		"linkedom": "^0.18.13"
+	}
 }

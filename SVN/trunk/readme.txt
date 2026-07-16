@@ -1,6 +1,6 @@
 === PlusMagi Tags Reindex ===
 Contributors: phunsanit
-Tags: tags, taxonomy, term id, reindex, gutenberg
+Tags: tags, taxonomy, term id, reindex, gutenberg, gap fill
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
@@ -9,54 +9,49 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: plusmagi-tags-reindex
 
-Insert and manage post tags with selectable ID strategy: fill missing term_id gaps or use normal WordPress auto-increment.
+Insert and manage post tags with smart ID gap filling and duplicate protection.
 
 == Description ==
 
-PlusMagi Tags Reindex is a WordPress plugin for teams that manage many tags and need tighter control over tag creation.
-
-It includes two important modes:
-
-* Fill missing term_id gaps (reindex mode).
-* Use default WordPress auto-increment IDs.
-
-You can toggle this behavior in Tools > Tags Reindex, and the same mode can be used inside the custom Gutenberg tags panel.
+PlusMagi Tags Reindex is a WordPress plugin that helps manage post tags efficiently.
+It offers two modes: normal WordPress auto-increment and smart gap filling for term_id.
 
 == Features ==
 
-* Selectable ID strategy (gap fill or auto-increment).
-* Bulk JSON tag import from Tools > Tags Reindex.
-* Custom Gutenberg tags panel replacing the default post_tag panel.
-* Real-time tag stats (all, published, scheduled, draft).
-* Batch add tags using comma-separated input.
-* REST endpoint protection for add-tag with manage_categories capability.
+* Smart gap filling for term_id (with duplicate protection)
+* Custom Gutenberg tags panel with real-time statistics
+* Bulk tag import via JSON
+* Toggle between gap fill and normal mode
+* Transaction safety for database operations
 
 == Installation ==
 
-1. Upload the plugin to `/wp-content/plugins/` or install the zip from your build output.
-2. Activate the plugin in WordPress admin.
-3. Open `Tools > Tags Reindex` and configure your preferred ID mode.
-4. Use the JSON importer or the Gutenberg custom panel to add tags.
+1. Upload the plugin files to the `/wp-content/plugins/plusmagi-tags-reindex` directory
+2. Activate the plugin through the 'Plugins' screen in WordPress
+3. Go to Tools > Tags Reindex to configure settings
 
 == Frequently Asked Questions ==
 
-= Will this always fill term_id gaps? =
+= Is gap filling safe? =
 
-No. You can enable or disable gap filling from plugin settings.
+Yes. The plugin uses database transactions and duplicate ID protection.
+However, we recommend testing on a staging site first.
 
-= Can I keep default WordPress ID behavior? =
+= Can I switch modes anytime? =
 
-Yes. Disable gap-fill mode and the plugin will create tags via WordPress auto-increment.
-
-= Who can create tags via REST add-tag? =
-
-Users must have `manage_categories` capability.
+Yes, you can toggle between gap fill mode and normal mode at any time.
 
 == Changelog ==
 
 = 1.0.0 =
-* Initial public release of PlusMagi Tags Reindex.
-* Added selectable ID mode (gap fill or default auto-increment).
-* Added Tools page for JSON tag import.
-* Added custom Gutenberg tags panel with stats and quick tag actions.
-* Added protected REST endpoint for tag creation (`manage_categories`).
+* Initial public release
+* Smart gap filling with duplicate ID protection and transactions
+* Enhanced custom Gutenberg tags panel
+* Bulk JSON import tool
+* Full English i18n support
+* Improved security and error handling
+
+== Upgrade Notice ==
+
+= 1.0.0 =
+Initial version. Please backup your database before use.
