@@ -5,7 +5,7 @@
 # - Builds TS source (if present) into runtime JS
 # - Packages production files into a versioned zip package
 # Usage:
-#   ./build.sh <plugin-slug>
+#	 ./build.sh <plugin-slug>
 # =============================================================================
 
 set -euo pipefail
@@ -44,12 +44,18 @@ resolve_slug() {
 
 # 2. Compile TypeScript assets if configuration exists
 build_ts_if_present() {
-	local tsconfig_path="$SOURCE_DIR/assets/ts/tsconfig.json"
-	if [[ -f "$tsconfig_path" ]]; then
-		echo "-> Building TypeScript: $tsconfig_path"
-		cd "$ROOT_DIR"
-		npx tsc -p "$tsconfig_path"
-	fi
+  local tsx_source="$SOURCE_DIR/js/plusmagi-tags-reindex.tsx"
+
+  if [[ -f "$tsx_source" ]]; then
+    echo "-> Compiling TypeScript Source via workspace build..."
+
+    # ✅ เรียกผ่าน npm workspace (จะไปเรียก plugin/package.json -> vite build)
+    npm run build:plugin
+
+    echo "✅ TS Build Completed: $SOURCE_DIR/js/plusmagi-tags-reindex.js"
+  else
+    echo "-> No TSX source found at $tsx_source, skipping TS build."
+  fi
 }
 
 main() {
@@ -99,7 +105,7 @@ main() {
 		cd "$TEMP_DIR"
 		zip -qr "$zip_filename" "$plugin_slug" -x "*.DS_Store" -x "__MACOSX"
 
-		# ✅ แก้ไขตรงนี้: กำหนดสิทธิ์ให้เจ้าของอ่าน/เขียนได้ และคนอื่นอ่านได้อย่างเดียว (644)
+		# ✅ กำหนดสิทธิ์ให้เจ้าของอ่าน/เขียนได้ และคนอื่นอ่านได้อย่างเดียว (644)
 		chmod 644 "$zip_filename"
 
 		# ปรับปรุง: ดึงสิทธิ์มาเช็ก และใส่ || true ป้องกันการพังหากไม่มีสิทธิ์รัน chown

@@ -73,6 +73,12 @@ class Plusmagi_Tags_Reindex {
 				'reindexEnabled' => $this->is_gap_reindex_enabled(),
 			]
 		);
+
+		wp_set_script_translations(
+			'plusmagi-plusmagi-tags-reindex',
+			'plusmagi-tags-reindex',
+			plugin_dir_path(__FILE__) . 'languages'
+		);
 	}
 
 	public function register_rest_endpoints() {

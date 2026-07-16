@@ -1,14 +1,18 @@
 {
 	"name": "wp-plusmagi-tags-reindex",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
+		"build": "npm run build:all",
 		"build:all": "npm run build:website && npm run build:plugin",
 		"build:plugin": "npm run build -w @plusmagi/plugin",
 		"build:website": "npm run build -w @plusmagi/website",
-		"deploy:all": "npm run build:all && npm run deploy:plugin",
-		"deploy:plugin": "npm run deploy -w @plusmagi/plugin",
+		"dev": "npm run dev:plugin",
+		"dev:plugin": "npm run dev -w @plusmagi/plugin",
 		"dev:website": "npm run dev -w @plusmagi/website",
 		"preview:website": "npm run preview -w @plusmagi/website",
+		"deploy:all": "npm run build:all && npm run deploy:plugin",
+		"deploy:plugin": "npm run deploy -w @plusmagi/plugin",
 		"test:admin": "cd Playwright && npx playwright test --project=admin",
 		"test:setup": "cd Playwright && npx playwright test --project=setup"
 	},
@@ -18,5 +22,8 @@
 	],
 	"dependencies": {
 		"linkedom": "^0.18.13"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^33.0.0"
 	}
 }

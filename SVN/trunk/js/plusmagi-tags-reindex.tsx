@@ -8,7 +8,7 @@
  */
 
 import { registerPlugin } from '@wordpress/plugins';
-import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
+import { PluginDocumentSettingPanel } from '@wordpress/editor';
 import { useState, useEffect } from '@wordpress/element';
 import { TextControl, Button, Dashicon } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
@@ -114,6 +114,14 @@ const PlusMagiTagsPanel: React.FC = () => {
 
 	const { editPost } = useDispatch('core/editor');
 
+	// ✅ NEW: Get removeEditorPanel to hide the default WordPress Tags sidebar panel
+	const { removeEditorPanel } = useDispatch('core/edit-post');
+
+	// ✅ NEW: Remove the default taxonomy panel for post_tag on mount
+	useEffect(() => {
+		removeEditorPanel('taxonomy-panel-post_tag');
+	}, [removeEditorPanel]);
+
 	// Load static system configuration passed down from the localized PHP ecosystem
 	const config: PHPGlobalConfig = window.plusmagiTagsEditorConfig || { statusLabels: {}, reindexEnabled: true };
 
@@ -124,7 +132,7 @@ const PlusMagiTagsPanel: React.FC = () => {
 		return () => {
 			holder.isMounted = false;
 		};
-	}, [tagIds, currentPostId]);
+	}, [tagIds.join(','), currentPostId]);
 
 	// 3. Action Handlers for mutating data attributes
 	const handleAddTags = (): void => {
@@ -135,17 +143,17 @@ const PlusMagiTagsPanel: React.FC = () => {
 			method: 'POST',
 			data: { name: inputValue }
 		})
-		.then((response) => {
-			if (response && response.ids) {
-				// Deduplicate and combine newly generated IDs safely using a Set sequence
-				const combinedIds = Array.from(new Set([...tagIds, ...response.ids]));
-				editPost({ tags: combinedIds });
-				setInputValue('');
-			}
-		})
-		.catch((error: unknown) => {
-			console.error('[PlusMagi Tags Reindex] Tag Generation Inversion Interrupted:', error);
-		});
+			.then((response) => {
+				if (response && response.ids) {
+					// Deduplicate and combine newly generated IDs safely using a Set sequence
+					const combinedIds = Array.from(new Set([...tagIds, ...response.ids]));
+					editPost({ tags: combinedIds });
+					setInputValue('');
+				}
+			})
+			.catch((error: unknown) => {
+				console.error('[PlusMagi Tags Reindex] Tag Generation Inversion Interrupted:', error);
+			});
 	};
 
 	const handleRemoveTag = (idToRemove: number): void => {
@@ -189,7 +197,7 @@ const PlusMagiTagsPanel: React.FC = () => {
 						__nextHasNoMarginBottom
 					/>
 				</div>
-				<Button isPrimary onClick={handleAddTags} style={{ height: '30px' }}>
+				<Button variant="primary" onClick={handleAddTags} style={{ height: '30px' }}>
 					{__('Add', 'plusmagi-tags-reindex')}
 				</Button>
 			</div>
@@ -208,8 +216,18 @@ const PlusMagiTagsPanel: React.FC = () => {
 				) : (
 					<ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
 						{tagIds.map((id: number) => {
-							// Fallback gracefully if the backend evaluation has not yet resolved data records
-							const term = statsMap[id] || { name: `ID: ${id}`, all: 0, published: 0, draft: 0 };
+							// 💡 Provide a fully-typed Fallback Object conforming strictly to the TermStats interface
+							const term: TermStats = statsMap[id] || {
+								id: id,
+								name: `ID: ${id}`,
+								slug: '',
+								edit_link: '',
+								all: 0,
+								published: 0,
+								future: 0,
+								draft: 0
+							};
+
 							return (
 								<li
 									key={id}
@@ -222,14 +240,14 @@ const PlusMagiTagsPanel: React.FC = () => {
 										gap: '10px'
 									}}
 								>
-									{/* Structured Report metrics containing dynamic parameter placement */}
 									<div style={{ flexGrow: 1 }}>
 										<div style={{ fontWeight: '500', color: '#1e1e1e', fontSize: '13px' }}>{term.name}</div>
 										<div style={{ fontSize: '11px', color: '#666', marginTop: '2px' }}>
 											{sprintf(
-												__('Total usage: %1$d | Published: %2$d | Draft: %3$d', 'plusmagi-tags-reindex'),
+												__('Total usage: %1$d | Published: %2$d | Future: %3$d | Draft: %4$d', 'plusmagi-tags-reindex'),
 												term.all,
 												term.published,
+												term.future,
 												term.draft
 											)}
 										</div>
@@ -237,7 +255,7 @@ const PlusMagiTagsPanel: React.FC = () => {
 
 									{/* Individual Term Disconnection Interconnector */}
 									<Button
-										isLink
+										variant="link"
 										isDestructive
 										onClick={() => handleRemoveTag(id)}
 										style={{ padding: 0, minWidth: 'auto', height: 'auto' }}
