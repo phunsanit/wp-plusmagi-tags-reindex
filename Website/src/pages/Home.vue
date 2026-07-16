@@ -1,160 +1,177 @@
 <template>
-  <div class="min-h-screen bg-[#040f1c] text-[#dee9fc] font-sans">
-    <!-- TopAppBar -->
-    <nav class="fixed top-0 w-full z-50 bg-[rgba(9,20,33,0.7)] backdrop-blur-lg shadow-lg h-20 flex items-center">
-      <div class="flex justify-between items-center w-full px-8 max-w-7xl mx-auto h-full">
-        <div class="flex items-center gap-8">
-          <a href="https://plusmagi-site-search.plusmagi.com" target="_blank" rel="noopener noreferrer" class="text-xl font-bold text-[#d9e3f6] tracking-tighter">PlusMagi Site Search</a>
-          <div class="hidden md:flex gap-6">
-            <a class="text-[#ffb4a4] font-bold border-b-2 border-[#ff5634] pb-1 tracking-tighter" href="#home">Home</a>
-            <a class="text-[#d9e3f6]/80 hover:text-[#ffb4a4] tracking-tighter" href="#documentation">Documentation</a>
-          </div>
-        </div>
-        <div class="flex items-center gap-4">
-          <a href="https://wordpress.org/plugins/plusmagi-site-search" target="_blank" rel="noopener noreferrer" class="bg-[#e12a00] text-white px-6 py-2 font-bold tracking-tighter text-sm rounded-sm hover:bg-[#ff5c3b] transition-all active:scale-95">Get Started</a>
-        </div>
-      </div>
-    </nav>
+  <div class="min-h-screen text-slate-100 bg-[#0d1224]">
+    <div class="pointer-events-none fixed inset-0 opacity-70" style="background-image: radial-gradient(circle at 8% 15%, rgba(255, 94, 58, 0.24), transparent 30%), radial-gradient(circle at 85% 8%, rgba(61, 180, 242, 0.2), transparent 28%), linear-gradient(135deg, rgba(16, 24, 48, 1) 0%, rgba(10, 15, 34, 1) 50%, rgba(11, 10, 32, 1) 100%);"></div>
 
-    <!-- Hero Section -->
-    <main class="pt-24">
-      <section id="home" class="relative min-h-[707px] flex flex-col justify-center items-center px-8 text-center overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,48,3,0.05)_0%,transparent_70%)] pointer-events-none"></div>
-        <div class="max-w-4xl relative z-10">
-          <span class="text-[#ff8f77] tracking-[0.2em] font-bold text-[0.6875rem] uppercase mb-6 block">VERSION 1.0.2 NOW LIVE</span>
-          <h1 class="text-5xl md:text-7xl font-extrabold tracking-[-0.04em] leading-[1.1] mb-8">
-            Powerful Search for <br />
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#ff8f77] to-[#e12a00]">Modern WordPress</span> Sites
-          </h1>
-          <p class="text-[#a1acbd] text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
-            Transform your standard WordPress search into a high-performance, deep-indexed architectural component built for scale.
+    <header class="sticky top-0 z-50 border-b border-white/10 backdrop-blur-md bg-[#0f1732]/70">
+      <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between gap-4">
+        <a href="#home" class="font-black tracking-tight text-base sm:text-lg text-white">PlusMagi Tags Reindex</a>
+        <nav class="hidden md:flex items-center gap-5 text-sm text-slate-300">
+          <a href="#features" class="hover:text-orange-300 transition-colors">Features</a>
+          <a href="#workflow" class="hover:text-orange-300 transition-colors">Workflow</a>
+          <a href="#changelog" class="hover:text-orange-300 transition-colors">Changelog</a>
+          <a href="#docs" class="hover:text-orange-300 transition-colors">Docs</a>
+        </nav>
+        <a
+          href="https://plusmagi.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center rounded-md bg-orange-500 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-orange-500/20 hover:bg-orange-400 transition-colors"
+        >
+          PlusMagi
+        </a>
+      </div>
+    </header>
+
+    <main class="relative z-10" id="home">
+      <section class="mx-auto max-w-6xl px-4 pt-14 pb-12 md:pt-20 md:pb-16 grid md:grid-cols-[1.15fr_0.85fr] gap-10 items-center">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.22em] text-cyan-200/90 mb-4">WordPress Tag Management Plugin</p>
+          <p class="inline-flex rounded-full border border-cyan-200/30 bg-cyan-200/10 px-3 py-1 text-xs font-semibold text-cyan-100 mb-4">
+            {{ releaseMeta.pluginName }} v{{ releaseMeta.version }}
           </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="https://pitt.plusmagi.com/" target="_blank" rel="noopener noreferrer" class="bg-[#e12a00] text-white px-10 py-4 font-bold tracking-tighter rounded-sm hover:bg-[#ff5c3b] transition-all active:scale-95">Live Demo</a>
-            <a href="https://wordpress.org/plugins/plusmagi-site-search" target="_blank" rel="noopener noreferrer" class="bg-[#ff8f77] text-[#4b0700] px-10 py-4 font-bold tracking-tighter rounded-sm hover:bg-[#ffb4a4] transition-all active:scale-95">Get Started</a>
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.05] tracking-[-0.03em] text-white">
+            Reindex Smartly.
+            <span class="block text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-rose-300 to-cyan-300">Or keep auto-increment.</span>
+          </h1>
+          <p class="mt-6 text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+            PlusMagi Tags Reindex helps editors create tags faster with batch input, real-time tag stats, and a selectable ID strategy.
+            Turn gap filling ON to reuse missing term_id slots, or OFF to use WordPress default auto-increment flow.
+          </p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a
+              href="#docs"
+              class="inline-flex justify-center rounded-md bg-white text-slate-900 px-5 py-3 font-bold hover:bg-slate-200 transition-colors"
+            >
+              Read Docs
+            </a>
+            <a
+              href="https://pitt.plusmagi.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex justify-center rounded-md border border-white/20 bg-white/5 text-white px-5 py-3 font-bold hover:bg-white/10 transition-colors"
+            >
+              Live Site
+            </a>
           </div>
+        </div>
+
+        <div class="rounded-2xl border border-white/15 bg-[#111933]/80 p-4 sm:p-5 shadow-[0_20px_80px_-25px_rgba(255,94,58,0.45)]">
           <img
             :src="bannerImage"
-            alt="PlusMagi Site Search banner"
-            class="mt-10 w-full max-w-4xl rounded border border-[#3e4958] shadow-2xl shadow-[#e12a00]/20"
+            alt="PlusMagi Tags Reindex banner"
+            class="w-full rounded-xl border border-white/15"
           />
-        </div>
-      </section>
-
-      <!-- Features Section -->
-      <section class="max-w-4xl mx-auto mt-16 px-4">
-        <h2 class="text-3xl font-bold mb-8 text-[#ff8f77]">Features</h2>
-        <div class="overflow-x-auto mb-8">
-          <table class="min-w-full border border-[#3e4958] rounded text-left">
-            <thead class="bg-[#172739]">
-              <tr>
-                <th class="py-2 px-4 border-b border-[#3e4958]">Role</th>
-                <th class="py-2 px-4 border-b border-[#3e4958]">Can See</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="py-2 px-4 border-b border-[#3e4958]">Public</td>
-                <td class="py-2 px-4 border-b border-[#3e4958]">Published posts only</td>
-              </tr>
-              <tr>
-                <td class="py-2 px-4 border-b border-[#3e4958]">Author</td>
-                <td class="py-2 px-4 border-b border-[#3e4958]">Own drafts/pending + all published</td>
-              </tr>
-              <tr>
-                <td class="py-2 px-4">Admin/Editor</td>
-                <td class="py-2 px-4">Everything (all statuses)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <ul class="grid md:grid-cols-2 gap-6 text-left">
-          <li><b>Strict Access Control</b> (see table above)</li>
-          <li><b>Advanced Filtering & Search Logic</b> (Custom Fields, Prefixes)</li>
-          <li><b>Rich Results</b> (Thumbnails, Tabs)</li>
-          <li><b>Admin-Like UI</b></li>
-          <li><b>Theme Integration</b></li>
-          <li><b>High Performance</b> (AJAX, Lightweight)</li>
-          <li><b>Developer Friendly</b> (Shortcode, Block support)</li>
-        </ul>
-
-        <h3 class="text-xl font-semibold mt-10 mb-3">3-Tab Search Preview</h3>
-        <p class="text-[#a1acbd] mb-4">Example result layout grouped into Posts, Category, and Tag tabs.</p>
-        <div class="border border-[#3e4958] rounded overflow-hidden">
-          <div class="grid grid-cols-3 bg-[#172739] text-sm font-semibold">
-            <button
-              type="button"
-              class="px-4 py-3 border-r border-[#3e4958] text-left transition-colors"
-              :class="activePreviewTab === 'posts' ? 'text-[#ffb4a4] bg-[#1f3349]' : 'text-[#c8d3e6] hover:text-[#ffb4a4]'"
-              @click="activePreviewTab = 'posts'"
-            >
-              Posts (3)
-            </button>
-            <button
-              type="button"
-              class="px-4 py-3 border-r border-[#3e4958] text-left transition-colors"
-              :class="activePreviewTab === 'category' ? 'text-[#ffb4a4] bg-[#1f3349]' : 'text-[#c8d3e6] hover:text-[#ffb4a4]'"
-              @click="activePreviewTab = 'category'"
-            >
-              Category (2)
-            </button>
-            <button
-              type="button"
-              class="px-4 py-3 text-left transition-colors"
-              :class="activePreviewTab === 'tag' ? 'text-[#ffb4a4] bg-[#1f3349]' : 'text-[#c8d3e6] hover:text-[#ffb4a4]'"
-              @click="activePreviewTab = 'tag'"
-            >
-              Tag (2)
-            </button>
-          </div>
-
-          <div class="bg-[#0d1c2e] p-4 space-y-3">
-            <div
-              v-for="item in previewResults[activePreviewTab]"
-              :key="`${activePreviewTab}-${item.title}`"
-              class="rounded border border-[#2b3f58] bg-[#13263c] p-3"
-            >
-              <div class="text-[#ffb4a4] font-semibold">{{ item.title }}</div>
-              <div class="text-[#a1acbd] text-sm">{{ item.meta }}</div>
+          <div class="mt-4 grid grid-cols-2 gap-3 text-xs sm:text-sm">
+            <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+              <p class="text-slate-400">Bulk Import</p>
+              <p class="font-semibold text-white mt-1">JSON tags in Tools panel</p>
+            </div>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+              <p class="text-slate-400">Editor UX</p>
+              <p class="font-semibold text-white mt-1">Custom sidebar + quick add</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Documentation Section -->
-      <section id="documentation" class="max-w-4xl mx-auto mt-16 px-4">
-        <h2 class="text-3xl font-bold mb-8 text-[#ff8f77]">Documentation</h2>
-        <h3 class="text-xl font-semibold mt-4 mb-2">Installation</h3>
-        <ol class="list-decimal list-inside mb-6 space-y-1">
-          <li>Download <b>plusmagi-site-search.zip</b> from the <b>build/</b> folder or generate it with <code>./build.sh</code></li>
-          <li>Upload the zip file to the Plugins page in your WordPress admin</li>
-          <li>Click Activate to enable the plugin</li>
-        </ol>
-        <h3 class="text-xl font-semibold mt-4 mb-2">Add to Theme</h3>
-        <ul class="list-disc list-inside space-y-1 mb-6">
-          <li>Add <code>[plusmagi-site-search]</code> to any page or post content</li>
-          <li>Or insert the shortcode directly in your theme file, for example:<br>
-            <code>&lt;?php echo do_shortcode('[plusmagi-site-search]'); ?&gt;</code>
-          </li>
-        </ul>
-        <div class="bg-[#172739] rounded p-4 text-sm text-[#dee9fc]">
-          <b>Tip:</b> You can customize the CSS via your theme or a Custom CSS plugin to match your site design.
-        </div>
+      <section id="features" class="mx-auto max-w-6xl px-4 pb-14 md:pb-20">
+        <div class="rounded-2xl border border-white/10 bg-[#101935]/75 p-6 md:p-8">
+          <h2 class="text-2xl md:text-3xl font-extrabold text-white">Plugin Features (Current)</h2>
+          <p class="mt-2 text-slate-300">Everything below matches the current plugin behavior and admin flow.</p>
 
-        <h3 class="text-xl font-semibold mt-8 mb-2">FAQ</h3>
-        <div class="space-y-4">
-          <div>
-            <h4 class="font-semibold text-[#ffb4a4]">Does it support Private Posts?</h4>
-            <p class="text-[#c8d3e6]">Yes, but only for users with the appropriate permissions (like Admins or Editors).</p>
+          <div class="mt-6 grid md:grid-cols-2 gap-4">
+            <article class="rounded-xl border border-cyan-300/20 bg-cyan-300/5 p-4">
+              <h3 class="font-bold text-cyan-100">Selectable ID Strategy</h3>
+              <p class="mt-2 text-sm text-slate-300">Users can toggle between filling missing term_id gaps or using normal auto-increment IDs.</p>
+            </article>
+            <article class="rounded-xl border border-orange-300/20 bg-orange-300/5 p-4">
+              <h3 class="font-bold text-orange-100">Batch JSON Import</h3>
+              <p class="mt-2 text-sm text-slate-300">Import multiple tags from a JSON array in Tools > Tags Reindex with validation and success notice.</p>
+            </article>
+            <article class="rounded-xl border border-rose-300/20 bg-rose-300/5 p-4">
+              <h3 class="font-bold text-rose-100">Custom Gutenberg Tags Panel</h3>
+              <p class="mt-2 text-sm text-slate-300">Replace default tags panel with a custom panel showing per-tag stats and quick add/remove behavior.</p>
+            </article>
+            <article class="rounded-xl border border-emerald-300/20 bg-emerald-300/5 p-4">
+              <h3 class="font-bold text-emerald-100">Safer REST Write Permission</h3>
+              <p class="mt-2 text-sm text-slate-300">Tag creation endpoint now checks manage_categories capability for better control.</p>
+            </article>
           </div>
-          <div>
-            <h4 class="font-semibold text-[#ffb4a4]">Can it search WooCommerce SKUs?</h4>
-            <p class="text-[#c8d3e6]">Yes. By enabling Custom Field search, it can index and find products by their SKU.</p>
+        </div>
+      </section>
+
+      <section id="workflow" class="mx-auto max-w-6xl px-4 pb-14 md:pb-20">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-5">How It Works</h2>
+        <div class="grid md:grid-cols-3 gap-4">
+          <article class="rounded-xl border border-white/10 bg-white/5 p-5">
+            <p class="text-xs tracking-[0.18em] uppercase text-orange-200">Step 1</p>
+            <h3 class="mt-2 font-bold text-lg">Choose ID Mode</h3>
+            <p class="mt-2 text-sm text-slate-300">In Tools > Tags Reindex, choose whether to fill gaps or use auto-increment.</p>
+          </article>
+          <article class="rounded-xl border border-white/10 bg-white/5 p-5">
+            <p class="text-xs tracking-[0.18em] uppercase text-cyan-200">Step 2</p>
+            <h3 class="mt-2 font-bold text-lg">Insert Tags</h3>
+            <p class="mt-2 text-sm text-slate-300">Add tags via JSON import or directly in the editor panel with comma-separated input.</p>
+          </article>
+          <article class="rounded-xl border border-white/10 bg-white/5 p-5">
+            <p class="text-xs tracking-[0.18em] uppercase text-emerald-200">Step 3</p>
+            <h3 class="mt-2 font-bold text-lg">Track Usage</h3>
+            <p class="mt-2 text-sm text-slate-300">See tag counts by status and open term edit pages from the same panel.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="changelog" class="mx-auto max-w-6xl px-4 pb-14 md:pb-20">
+        <div class="rounded-2xl border border-white/10 bg-[#121d3d]/80 p-6 md:p-8">
+          <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+            <div>
+              <h2 class="text-2xl md:text-3xl font-extrabold text-white">Changelog {{ releaseMeta.changelogVersion }}</h2>
+              <p class="mt-2 text-slate-300">This section is synced automatically from plugin header and readme on each build.</p>
+            </div>
+            <p class="text-xs text-slate-400">Source: {{ releaseMeta.sources.pluginHeader }} + {{ releaseMeta.sources.readme }}</p>
           </div>
-          <div>
-            <h4 class="font-semibold text-[#ffb4a4]">Does it slow down my site?</h4>
-            <p class="text-[#c8d3e6]">No, the plugin is optimized with lightweight Ajax calls to ensure high performance.</p>
-          </div>
+
+          <ul class="mt-6 space-y-3">
+            <li
+              v-for="item in releaseMeta.changelogItems"
+              :key="item"
+              class="rounded-lg border border-white/10 bg-white/5 p-4 text-slate-200"
+            >
+              {{ item }}
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="docs" class="mx-auto max-w-6xl px-4 pb-20">
+        <div class="grid lg:grid-cols-[1fr_1fr] gap-6">
+          <article class="rounded-2xl border border-white/10 bg-[#0f1938]/80 p-6">
+            <h2 class="text-2xl font-extrabold text-white">Installation</h2>
+            <ol class="mt-4 list-decimal list-inside space-y-2 text-slate-300 text-sm sm:text-base">
+              <li>Run ./build.sh in the project root.</li>
+              <li>Upload plusmagi-tags-reindex zip from wp-assets or Website/build latest zip.</li>
+              <li>Activate plugin in WordPress admin.</li>
+              <li>Open Tools > Tags Reindex and configure ID mode.</li>
+            </ol>
+          </article>
+
+          <article class="rounded-2xl border border-white/10 bg-[#0f1938]/80 p-6">
+            <h2 class="text-2xl font-extrabold text-white">FAQ</h2>
+            <div class="mt-4 space-y-4 text-sm sm:text-base">
+              <div>
+                <h3 class="font-bold text-orange-100">Will IDs always be reindexed?</h3>
+                <p class="text-slate-300 mt-1">No. The user can enable or disable gap filling from the plugin settings and from editor toggle flow.</p>
+              </div>
+              <div>
+                <h3 class="font-bold text-cyan-100">Who can create tags via REST add-tag?</h3>
+                <p class="text-slate-300 mt-1">Only users with manage_categories capability.</p>
+              </div>
+              <div>
+                <h3 class="font-bold text-emerald-100">Can I still use default WordPress ID behavior?</h3>
+                <p class="text-slate-300 mt-1">Yes. Disable gap-fill mode and new tags will follow normal auto-increment IDs.</p>
+              </div>
+            </div>
+          </article>
         </div>
       </section>
     </main>
@@ -162,35 +179,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import bannerImage from '../assets/banner-1544x500.png'
-
-const activePreviewTab = ref<'posts' | 'category' | 'tag'>('posts')
-
-const previewResults = {
-  posts: [
-    { title: 'How to Configure PlusMagi Search', meta: 'Published - Post' },
-    { title: 'WooCommerce SKU Search Setup', meta: 'Published - Post' },
-    { title: 'Internal Knowledge Base Search', meta: 'Private - Post' },
-  ],
-  category: [
-    { title: 'Documentation', meta: 'Category Archive' },
-    { title: 'WooCommerce', meta: 'Category Archive' },
-  ],
-  tag: [
-    { title: 'live-search', meta: 'Tag Archive' },
-    { title: 'sku-filter', meta: 'Tag Archive' },
-  ],
-} as const
+import { releaseMeta } from '../generated/release-meta'
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800;900&display=swap');
-.material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
-  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-}
-body {
-  font-family: 'Inter', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+
+div {
+  font-family: 'Space Grotesk', sans-serif;
 }
 </style>

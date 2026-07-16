@@ -1,35 +1,20 @@
-# PlusMagi Site Search
+# PlusMagi Tags Reindex
 
-A WordPress plugin that enables detailed and powerful search capabilities for your site.
+A WordPress plugin that inserts new tags by automatically filling gaps in term IDs (Reindexing unused term_id).
 
 ## Features
 
-- **Strict Access Control**:
-  - **Public**: Only published posts.
-  - **Author**: Own drafts/pending + all published.
-  - **Admin/Editor**: Everything.
-- **Advanced Filtering & Search Logic**:
-  - **Custom Fields (Meta)**: Automatically searches all custom fields (e.g., SKUs, internal codes) linked to posts.
-  - **Search Prefixes**:
-    - `post: keyword` - Search specific pages/posts.
-    - `tag: keyword` - Search specific tags.
-    - `category: keyword` - Search specific categories.
-    - `keyword` (no prefix) - Smart search across all types.
-- **Rich Results**:
-  - **Thumbnails**: Displays featured images in results if available.
-  - **Tabs**: Results are automatically organized into Posts, Categories, and Tags tabs.
-- **Admin-Like UI**: Matches the WordPress link inserter style with icons and metadata.
-- **Theme Integration**: Automatically inherits theme colors via CSS variables.
-
-## Live Demo
-
-You can see a live demo of the plugin in action at [plusmagi-site-search.plusmagi.com](https://plusmagi-site-search.plusmagi.com/).
+- **Automatic Gap Filling**: Finds the lowest available unused `term_id` and reuses it for new tags.
+- **Real-time Reindexing**: Uses WPDB to safely insert terms and taxonomies without auto-increment jumps.
+- **Custom Editor Panel**: Replaces the default Gutenberg tags panel with a custom sidebar.
+- **Usage Statistics**: Displays real-time tag usage in the current post and overall publish stats.
 
 ## Installation
 
-1. Download the latest release from the `build/` directory or build it yourself.
-2. Upload `plusmagi-site-search.zip` to your WordPress plugins page.
+1. Download the latest release from the `wp-assets/` directory or build it yourself.
+2. Upload `plusmagi-tags-reindex.zip` to your WordPress plugins page.
 3. Activate the plugin.
+4. Go to Tools > Tags Reindex to paste JSON array of tags, or edit any post to use the custom Tags panel.
 
 ## Build Instructions
 
@@ -39,12 +24,19 @@ To build the plugin zip file:
 ./build.sh
 ```
 
-The output file will be located at `build/plusmagi-site-search.zip`.
+The output files are created at:
+
+- `wp-assets/plusmagi-tags-reindex-<version>.zip`
+- `Website/build/plusmagi-tags-reindex-latest.zip`
 
 ## Testing
 
-End-to-end tests run against the live site using [Playwright](https://playwright.dev/).
-Tests are located in `Playwright/tests/search.spec.js` (51 tests across 3 browsers).
+End-to-end tests run against the target WordPress site using [Playwright](https://playwright.dev/).
+Primary plugin-related tests are located in:
+
+- `Playwright/tests/tags-reindex.spec.js`
+- `Playwright/tests/block-tags.spec.js`
+- `Playwright/tests/reindex-option.spec.js`
 
 ### Setup (first time only)
 
@@ -64,9 +56,9 @@ npm test
 ### Debug a specific browser
 
 ```bash
-npm run test:chromium   # Chrome / Edge
-npm run test:firefox    # Firefox
-npm run test:safari     # Safari (WebKit)
+npm run test:chromium	 # Chrome / Edge
+npm run test:firefox		# Firefox
+npm run test:safari		 # Safari (WebKit)
 ```
 
 ### When a test fails
@@ -83,30 +75,27 @@ npm run test:ui
 
 | Area | What is tested |
 |------|---------------|
-| Widget | Input visible, scripts enqueued, `plusmagiSiteSearch` object defined |
-| Debounce | No API request for queries shorter than 2 characters |
-| Search | Dropdown appears, tabs render, tab switching, click-outside closes |
-| Prefixes | `post:`, `tag:`, `category:` all trigger correct REST requests |
-| REST API | Status codes, response shape, access control (public sees only published) |
+| Admin Tools | Tools page renders and validates JSON import workflow |
+| Gutenberg Panel | Custom Tags panel add/remove behavior and comma split |
+| Reindex Option | Toggle on/off behavior for gap fill mode |
+| Auth Setup | Admin login and storage state generation |
 
 
 ## Usage
 
-Use the shortcode anywhere on your site:
+Use the plugin in these two main flows:
 
 ```
-[plusmagi-site-search]
+Tools > Tags Reindex (JSON import)
+Post Editor > Tags (Custom panel)
 ```
 
 ## Security & User Roles
 
-**Is the search appropriate for User Roles?**
+Tag creation through REST is protected by capability checks:
 
-Yes, it is appropriate and secure. Logic has been implemented to strictly check user capabilities in `pm-search.php` (function `handle_search`) as follows:
-
-- **Guest**: Can only search for posts with **Publish** status.
-- **Author**: Can search for their own posts that are **Draft**, **Pending**, or **Private** (using the `filter_author_posts_where` filter to restrict results to their own posts).
-- **Editor / Admin**: Can search for posts of **all statuses**, whether Publish, Draft, Private, Pending, or Future, from any user.
+- `manage_categories` is required for `plusmagi-tags/v1/add-tag`.
+- Admin form processing is protected with nonce + `manage_options`.
 
 ## Contributing
 

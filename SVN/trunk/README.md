@@ -1,117 +1,63 @@
-# PlusMagi Site Search
+# PlusMagi Tags Reindex
 
-A WordPress plugin that enables detailed and powerful search capabilities for your site.
+A WordPress plugin for fast tag operations with selectable ID behavior.
+
+## What It Does
+
+PlusMagi Tags Reindex helps editors create and manage post tags using two ID strategies:
+
+1. Reuse missing term_id gaps.
+2. Use normal WordPress auto-increment IDs.
+
+The mode can be configured in Tools > Tags Reindex and also used when adding tags from the custom Gutenberg panel.
 
 ## Features
 
-- **Strict Access Control**:
-  - **Public**: Only published posts.
-  - **Author**: Own drafts/pending + all published.
-  - **Admin/Editor**: Everything.
-- **Advanced Filtering & Search Logic**:
-  - **Custom Fields (Meta)**: Automatically searches all custom fields (e.g., SKUs, internal codes) linked to posts.
-  - **Search Prefixes**:
-    - `post: keyword` - Search specific pages/posts.
-    - `tag: keyword` - Search specific tags.
-    - `category: keyword` - Search specific categories.
-    - `keyword` (no prefix) - Smart search across all types.
-- **Rich Results**:
-  - **Thumbnails**: Displays featured images in results if available.
-  - **Tabs**: Results are automatically organized into Posts, Categories, and Tags tabs.
-- **Admin-Like UI**: Matches the WordPress link inserter style with icons and metadata.
-- **Theme Integration**: Automatically inherits theme colors via CSS variables.
+- Selectable ID mode: gap fill or auto-increment.
+- Bulk JSON tag import in Tools > Tags Reindex.
+- Custom Gutenberg tags panel replacing the default post_tag panel.
+- Real-time stats for selected tags.
+- Comma-separated quick input for batch add.
+- REST add-tag endpoint protected by manage_categories capability.
 
 ## Installation
 
-1. Download the latest release from the `build/` directory or build it yourself.
-2. Upload `plusmagi-site-search.zip` to your WordPress plugins page.
+1. Build or download `plusmagi-tags-reindex.zip`.
+2. Upload the zip in WordPress Plugins.
 3. Activate the plugin.
+4. Open Tools > Tags Reindex and choose your ID mode.
 
-## Build Instructions
-
-To build the plugin zip file:
+## Build
 
 ```bash
 ./build.sh
 ```
 
-The output file will be located at `build/plusmagi-site-search.zip`.
+Artifacts are created in:
+
+- `wp-assets/plusmagi-tags-reindex-<version>.zip`
+- `Website/build/plusmagi-tags-reindex-latest.zip`
 
 ## Testing
 
-End-to-end tests run against the live site using [Playwright](https://playwright.dev/).
-Tests are located in `Playwright/tests/search.spec.js` (51 tests across 3 browsers).
-
-### Setup (first time only)
+Run Playwright tests from the project root:
 
 ```bash
-cd Playwright
-npm install
-npx playwright install chromium firefox webkit
+npm run test:admin
 ```
 
-### Daily use
+For setup only:
 
 ```bash
-# Run all tests — Chromium, Firefox, Safari in parallel
-npm test
+npm run test:setup
 ```
 
-### Debug a specific browser
+## Changelog
 
-```bash
-npm run test:chromium   # Chrome / Edge
-npm run test:firefox    # Firefox
-npm run test:safari     # Safari (WebKit)
-```
+### 1.0.0
 
-### When a test fails
-
-```bash
-# 1. Open the HTML report to see screenshots and error details
-npm run report
-
-# 2. If still unclear, step through tests visually
-npm run test:ui
-```
-
-### Test coverage
-
-| Area | What is tested |
-|------|---------------|
-| Widget | Input visible, scripts enqueued, `plusmagiSiteSearch` object defined |
-| Debounce | No API request for queries shorter than 2 characters |
-| Search | Dropdown appears, tabs render, tab switching, click-outside closes |
-| Prefixes | `post:`, `tag:`, `category:` all trigger correct REST requests |
-| REST API | Status codes, response shape, access control (public sees only published) |
-
-
-## Usage
-
-Use the shortcode anywhere on your site:
-
-```
-[plusmagi_search]
-```
-
-## Security & User Roles
-
-**Is the search appropriate for User Roles?**
-
-Yes, it is appropriate and secure. Logic has been implemented to strictly check user capabilities in `plusmagi-site-search.php` (function `handle_search`) as follows:
-
-- **Guest**: Can only search for posts with **Publish** status.
-- **Author**: Can search for their own posts that are **Draft**, **Pending**, or **Private** (using the `filter_author_posts_where` filter to restrict results to their own posts).
-- **Editor / Admin**: Can search for posts of **all statuses**, whether Publish, Draft, Private, Pending, or Future, from any user.
-
-## Contributing
-
-1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/amazing-feature`).
-3. Commit your changes (`git commit -m 'Add some amazing feature'`).
-4. Push to the branch (`git push origin feature/amazing-feature`).
-5. Open a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- Initial release of PlusMagi Tags Reindex.
+- Added selectable ID mode.
+- Added JSON import tools page.
+- Added custom Gutenberg tags panel with stats.
+- Added protected REST add-tag endpoint.

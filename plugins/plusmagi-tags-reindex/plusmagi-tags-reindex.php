@@ -21,17 +21,9 @@ function plusmagi_enqueue_scripts() {
     wp_register_script(
         'plusmagi-tag-editor',
         $script_url,
-        array( 'wp-api-fetch', 'wp-components', 'wp-data', 'wp-edit-post', 'wp-element', 'wp-i18n', 'wp-plugins' ),
+        array( 'wp-components', 'wp-data', 'wp-edit-post', 'wp-element', 'wp-i18n', 'wp-plugins', 'wp-dom-ready' ),
         file_exists( $script_path ) ? filemtime( $script_path ) : PLUSMAGI_TAGS_VERSION,
         true
-    );
-
-    wp_localize_script(
-        'plusmagi-tag-editor',
-        'plusmagiTagsConfig',
-        array(
-            'frontendBaseUrl' => home_url(),
-        )
     );
 
     wp_enqueue_script( 'plusmagi-tag-editor' );

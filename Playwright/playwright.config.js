@@ -4,7 +4,7 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 /**
- * Playwright configuration for PlusMagi Site Search plugin tests.
+ * Playwright configuration for PlusMagi Tags Reindex plugin tests.
  * Target: https://pitt.plusmagi.com  (live WordPress site with plugin installed)
  *
  * Run all guest tests:       npx playwright test
@@ -85,7 +85,7 @@ module.exports = defineConfig({
         // ------------------------------------------------------------------
         {
             name: 'admin',
-            testMatch: /block\.spec\.js/,
+            testMatch: /(block|reindex-option)\.spec\.js/,
             dependencies: ['setup'],
             use: {
                 ...devices['Desktop Chrome'],
