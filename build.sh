@@ -2,20 +2,37 @@
 
 # =============================================================================
 # UNIVERSAL WordPress PLUGIN BUILD SCRIPT
-# - Builds TS source (if present) into runtime JS
+# - Builds frontend assets (if build:plugin script exists)
 # - Packages production files into a versioned zip package
 # Usage:
-#	 ./build.sh <plugin-slug>
+#   ./build.sh <plugin-slug>
 # =============================================================================
 
 set -euo pipefail
 
-# --- Configuration & Paths ---
-ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
-SOURCE_DIR="$ROOT_DIR/SVN/trunk"
-PM_ASSETS_DIR="$ROOT_DIR/wp-assets"
-TEMP_DIR="$ROOT_DIR/temp_build"
-DEFAULT_PLUGIN_SLUG="plusmagi-tags-reindex"
+# ✅ Change to the script's directory immediately to prevent path issues
+cd "$(dirname "$0")" || exit
+
+# --- Configuration & Paths (Relative) ---
+SOURCE_DIR="./SVN/trunk"
+PM_ASSETS_DIR="./wp-assets"
+TEMP_DIR="./temp_build"
+DEFAULT_PLUGIN_SLUG="plusmagi"
+
+# ✅ Patterns to exclude during rsync (prevents packing dev/test files)
+EXCLUDE_PATTERNS=(
+    "--exclude=.DS_Store"
+    "--exclude=__MACOSX"
+    "--exclude=assets/ts"
+    "--exclude=node_modules"
+    "--exclude=.git"
+    "--exclude=.gitignore"
+    "--exclude=package.json"
+    "--exclude=package-lock.json"
+    "--exclude=tsconfig.json"
+    "--exclude=vite.config.*"
+    "--exclude=*.log"
+)
 
 # 1. Resolve Plugin Slug priority: Argument > Env Variable > package.json > Default
 resolve_slug() {
@@ -29,7 +46,7 @@ resolve_slug() {
 		return
 	fi
 
-	local package_json="$ROOT_DIR/package.json"
+	local package_json="./package.json"
 	if [[ -f "$package_json" ]]; then
 		local module_name
 		module_name=$(grep '"name":' "$package_json" | head -n1 | cut -d'"' -f4 || true)
@@ -42,26 +59,21 @@ resolve_slug() {
 	echo "$DEFAULT_PLUGIN_SLUG"
 }
 
-# 2. Compile TypeScript assets if configuration exists
-build_ts_if_present() {
-  local tsx_source="$SOURCE_DIR/js/plusmagi-tags-reindex.tsx"
+# 2. Compile frontend assets if the build script exists in package.json
+build_frontend_if_present() {
+  local package_json="./package.json"
 
-  if [[ -f "$tsx_source" ]]; then
-    echo "-> Compiling TypeScript Source via workspace build..."
-
-    # ✅ เรียกผ่าน npm workspace (จะไปเรียก plugin/package.json -> vite build)
+  if [[ -f "$package_json" ]] && grep -q '"build:plugin"' "$package_json"; then
+    echo "-> Compiling Frontend Assets via workspace build..."
     npm run build:plugin
-
-    echo "✅ TS Build Completed: $SOURCE_DIR/js/plusmagi-tags-reindex.js"
+    echo "✅ Frontend Build Completed."
   else
-    echo "-> No TSX source found at $tsx_source, skipping TS build."
+    echo "-> No 'build:plugin' script found in package.json, skipping frontend build."
   fi
 }
 
 main() {
 	local raw_slug plugin_slug display_name target_php_file version zip_filename
-
-	cd "$ROOT_DIR"
 
 	raw_slug="$(resolve_slug "${1:-}")"
 	plugin_slug="${raw_slug#wp-}"
@@ -73,6 +85,7 @@ main() {
 		exit 1
 	fi
 
+	# Extract Version and handle CRLF (\r) issues from files edited in Windows
 	version=$(grep -i "Version:" "$target_php_file" | head -n1 | sed -E 's/.*Version:[[:space:]]*//i' | tr -d '\r' | xargs || true)
 	if [[ -z "$version" ]]; then
 		echo "❌ Error: Could not find 'Version:' header in $target_php_file" >&2
@@ -84,18 +97,20 @@ main() {
 	echo "🚀 Building version: $version"
 	echo "-----------------------------------------"
 
-	build_ts_if_present
+	build_frontend_if_present
 
+	# Prepare directories
 	mkdir -p "$PM_ASSETS_DIR"
 	rm -rf "$TEMP_DIR"
 	mkdir -p "$TEMP_DIR/$plugin_slug"
 
 	echo "-> Copying core deployment files..."
 	if command -v rsync >/dev/null 2>&1; then
-		rsync -a --exclude '.DS_Store' --exclude '__MACOSX' --exclude 'assets/ts' "$SOURCE_DIR/" "$TEMP_DIR/$plugin_slug/"
+		rsync -a "${EXCLUDE_PATTERNS[@]}" "$SOURCE_DIR/" "$TEMP_DIR/$plugin_slug/"
 	else
+		# Fallback for systems without rsync
 		cp -R "$SOURCE_DIR"/* "$TEMP_DIR/$plugin_slug/"
-		rm -rf "$TEMP_DIR/$plugin_slug/assets/ts" || true
+		rm -rf "$TEMP_DIR/$plugin_slug/assets/ts" "$TEMP_DIR/$plugin_slug/node_modules" || true
 	fi
 
 	zip_filename="${display_name}-${version}.zip"
@@ -105,10 +120,10 @@ main() {
 		cd "$TEMP_DIR"
 		zip -qr "$zip_filename" "$plugin_slug" -x "*.DS_Store" -x "__MACOSX"
 
-		# ✅ กำหนดสิทธิ์ให้เจ้าของอ่าน/เขียนได้ และคนอื่นอ่านได้อย่างเดียว (644)
+		# ✅ Set permissions: owner read/write, others read-only (644)
 		chmod 644 "$zip_filename"
 
-		# ปรับปรุง: ดึงสิทธิ์มาเช็ก และใส่ || true ป้องกันการพังหากไม่มีสิทธิ์รัน chown
+		# Fetch owner/group and append || true to prevent failure if chown lacks privileges
 		local user_group
 		user_group=$(stat -f "%u:%g" "$SOURCE_DIR" 2>/dev/null || stat --format="%U:%G" "$SOURCE_DIR" 2>/dev/null || echo "")
 		if [[ -n "$user_group" ]]; then
@@ -119,10 +134,12 @@ main() {
 	echo "-> Moving final assets..."
 	mv "$TEMP_DIR/$zip_filename" "$PM_ASSETS_DIR/$zip_filename"
 
+	# Cleanup
 	rm -rf "$TEMP_DIR"
 
 	echo "✅ Build Complete!"
-	echo "📦 Package: $PM_ASSETS_DIR/$zip_filename"
+	echo "📦 Versioned zip: $PM_ASSETS_DIR/$zip_filename"
 }
 
+# Run the main function and pass all arguments
 main "$@"
