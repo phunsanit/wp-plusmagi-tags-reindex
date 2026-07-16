@@ -1,110 +1,58 @@
 # PlusMagi Tags Reindex
 
-A WordPress plugin that inserts new tags by automatically filling gaps in term IDs (Reindexing unused term_id).
+[![WordPress Plugin](https://img.shields.io/badge/WordPress-Plugin-blue.svg)](https://wordpress.org/plugins/plusmagi-tags-reindex)
+[![License: GPLv2 or later](https://img.shields.io/badge/License-GPLv2%20or%20later-orange.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 
-## Features
+**PlusMagi Tags Reindex** is a WordPress plugin designed to help site administrators and editors manage post tags efficiently, quickly, and cleanly. It is perfect for content-heavy websites that use a large number of tags or frequently delete old tags, which usually leaves messy "gaps" and skipped numbers in the database.
 
-- **Automatic Gap Filling**: Finds the lowest available unused `term_id` and reuses it for new tags.
-- **Real-time Reindexing**: Uses WPDB to safely insert terms and taxonomies without auto-increment jumps.
-- **Custom Editor Panel**: Replaces the default Gutenberg tags panel with a custom sidebar.
-- **Usage Statistics**: Displays real-time tag usage in the current post and overall publish stats.
+---
 
-## Installation
+## 🌟 Key Features
 
-1. Download the latest release from the `wp-assets/` directory or build it yourself.
-2. Upload `plusmagi-tags-reindex.zip` to your WordPress plugins page.
-3. Activate the plugin.
-4. Go to Tools > Tags Reindex to paste JSON array of tags, or edit any post to use the custom Tags panel.
+### 1. Smart Tag ID Gap Filler
+Normally, when you delete a tag in WordPress, its unique ID number is lost forever. When you create a new tag, WordPress skips ahead to the next higher number, leaving empty gaps in your database. This plugin intelligently finds those missing ID numbers and recycles them for your new tags, keeping your database compact and clean.
 
-## Build Instructions
+### 2. Upgraded Tags Panel in the Post Editor
+We have replaced the default WordPress tags box in the Block Editor (Gutenberg) with a much smarter version:
+* **Quick Comma-Separated Input:** You can type or paste a list like `"Tag A, Tag B, Tag C"`. The plugin instantly splits them into three separate tags without slowing down your browser.
+* **Real-time Statistics:** Right inside the editor sidebar, you can instantly see:
+  * How many times this specific word appears in your current article text.
+  * How many **published** posts are currently using this tag.
+  * The total number of posts linked to this tag.
 
-To build the plugin zip file:
+### 3. Bulk Tag Import Tool
+If you have a long list of tags you want to add to your website all at once, you can paste them into our bulk tool to create dozens of tags in a single click.
 
-```bash
-./build.sh
-```
+---
 
-The output files are created at:
+## 🛠️ Installation
 
-- `wp-assets/plusmagi-tags-reindex-<version>.zip`
-- `Website/build/plusmagi-tags-reindex-latest.zip`
+1. Download the latest release `plusmagi-tags-reindex.zip`.
+2. Go to your WordPress Dashboard and navigate to **Plugins > Add New Plugin**.
+3. Click **Upload Plugin** at the top, choose the downloaded ZIP file, and click **Install Now**.
+4. Click **Activate Plugin**, and you are ready to go!
 
-## Testing
+---
 
-End-to-end tests run against the target WordPress site using [Playwright](https://playwright.dev/).
-Primary plugin-related tests are located in:
+## 🚀 How to Use
 
-- `Playwright/tests/tags-reindex.spec.js`
-- `Playwright/tests/block-tags.spec.js`
-- `Playwright/tests/reindex-option.spec.js`
+### 1. Choosing Your Tag ID Strategy
+Navigate to **Tools > Tags Reindex** in your WordPress dashboard. You will see two options:
+* **Gap Fill Mode:** The system will recycle unused ID numbers left behind by previously deleted tags.
+* **Normal Mode (Auto-Increment):** The system will let WordPress assign numbers continuously as it usually does.
 
-### Setup (first time only)
+> 💡 **Note:** You can switch between these modes at any time depending on your preference.
 
-```bash
-cd Playwright
-npm install
-npx playwright install chromium firefox webkit
-```
+### 2. Bulk Importing Tags
+On the same settings page (**Tools > Tags Reindex**), you can use the import section to paste your prepared tags list to instantly batch-create them without typing them one by one.
 
-### Daily use
+### 3. Working inside the Post Editor
+When you open or edit any post, the original WordPress tags box will be automatically upgraded to the **PlusMagi Tags Reindex** panel in the right sidebar. Enjoy instant tag splitting and real-time statistics as you write.
 
-```bash
-# Run all tests — Chromium, Firefox, Safari in parallel
-npm test
-```
+---
 
-### Debug a specific browser
+## 🔒 Security & Permissions
 
-```bash
-npm run test:chromium	 # Chrome / Edge
-npm run test:firefox		# Firefox
-npm run test:safari		 # Safari (WebKit)
-```
-
-### When a test fails
-
-```bash
-# 1. Open the HTML report to see screenshots and error details
-npm run report
-
-# 2. If still unclear, step through tests visually
-npm run test:ui
-```
-
-### Test coverage
-
-| Area | What is tested |
-|------|---------------|
-| Admin Tools | Tools page renders and validates JSON import workflow |
-| Gutenberg Panel | Custom Tags panel add/remove behavior and comma split |
-| Reindex Option | Toggle on/off behavior for gap fill mode |
-| Auth Setup | Admin login and storage state generation |
-
-
-## Usage
-
-Use the plugin in these two main flows:
-
-```
-Tools > Tags Reindex (JSON import)
-Post Editor > Tags (Custom panel)
-```
-
-## Security & User Roles
-
-Tag creation through REST is protected by capability checks:
-
-- `manage_categories` is required for `plusmagi-tags/v1/add-tag`.
-- Admin form processing is protected with nonce + `manage_options`.
-
-## Contributing
-
-1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/amazing-feature`).
-3. Commit your changes (`git commit -m 'Add some amazing feature'`).
-4. Push to the branch (`git push origin feature/amazing-feature`).
-5. Open a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Your website stability is our priority:
+* Only users with **Administrator** or **Editor** roles (specifically those with `manage_categories` capabilities) can adjust these settings or create tags through this system. 
+* This ensures your website's database remains secure and protected from unauthorized access.
