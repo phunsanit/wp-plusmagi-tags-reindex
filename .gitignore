@@ -6,10 +6,11 @@ dist/
 coverage/
 
 # SVN mirror/metadata
-SVN/
 .svn/
-**/.svn/
 **/.backup/
+**/.svn/
+SVN/**/dist/
+SVN/**/node_modules/
 
 # Logs
 npm-debug.log*
