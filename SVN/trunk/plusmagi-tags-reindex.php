@@ -5,7 +5,7 @@
  * Description: Intelligently manage and reindex post tags, recycle unused term IDs safely, and enhance the Gutenberg tags panel.
  * Version:		1.0.0
  * Author:		Pitt Phunsanit
- * Author URI:	https://github.com/plusmagi
+ * Author URI:	https://pitt.plusmagi.com
  * License:		GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: plusmagi-tags-reindex
@@ -93,7 +93,8 @@ class Plusmagi_Tags_Reindex {
 		register_rest_route('plusmagi-tags/v1', '/terms-with-stats', [
 			'methods' => 'GET',
 			'callback' => [$this, 'get_terms_with_stats'],
-			'permission_callback' => fn() => current_user_can('edit_posts'),
+			// เปลี่ยนจาก 'edit_posts' เป็น 'manage_categories'
+			'permission_callback' => fn() => current_user_can('manage_categories'),
 			'args' => ['ids' => ['required' => true, 'type' => 'string']],
 		]);
 

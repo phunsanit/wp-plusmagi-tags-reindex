@@ -1,11 +1,12 @@
 === PlusMagi Tags Reindex ===
-Contributors: plusmagi
+Contributors: phunsanit
 Tags: tags, reindex, database, gutenberg, bulk import
 Requires at least: 6.0
 Tested up to: 7.0
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Development: https://github.com/phunsanit/wp-plusmagi-tags-reindex
 
 Intelligently manage post tags, recycle unused term IDs safely, and enhance the Gutenberg tags panel.
 

@@ -21,17 +21,17 @@ DEFAULT_PLUGIN_SLUG="plusmagi"
 
 # ✅ Patterns to exclude during rsync (prevents packing dev/test files)
 EXCLUDE_PATTERNS=(
-    "--exclude=.DS_Store"
-    "--exclude=__MACOSX"
-    "--exclude=assets/ts"
-    "--exclude=node_modules"
-    "--exclude=.git"
-    "--exclude=.gitignore"
-    "--exclude=package.json"
-    "--exclude=package-lock.json"
-    "--exclude=tsconfig.json"
-    "--exclude=vite.config.*"
-    "--exclude=*.log"
+	"--exclude=.DS_Store"
+	"--exclude=__MACOSX"
+	"--exclude=assets/ts"
+	"--exclude=node_modules"
+	"--exclude=.git"
+	"--exclude=.gitignore"
+	"--exclude=package.json"
+	"--exclude=package-lock.json"
+	"--exclude=tsconfig.json"
+	"--exclude=vite.config.*"
+	"--exclude=*.log"
 )
 
 # 1. Resolve Plugin Slug priority: Argument > Env Variable > package.json > Default
@@ -64,16 +64,16 @@ build_frontend_if_present() {
   local package_json="./package.json"
 
   if [[ -f "$package_json" ]] && grep -q '"build:plugin"' "$package_json"; then
-    echo "-> Compiling Frontend Assets via workspace build..."
-    npm run build:plugin
-    echo "✅ Frontend Build Completed."
+	echo "-> Compiling Frontend Assets via workspace build..."
+	npm run build:plugin
+	echo "✅ Frontend Build Completed."
   else
-    echo "-> No 'build:plugin' script found in package.json, skipping frontend build."
+	echo "-> No 'build:plugin' script found in package.json, skipping frontend build."
   fi
 }
 
 main() {
-	local raw_slug plugin_slug display_name target_php_file version zip_filename
+	local raw_slug plugin_slug display_name target_php_file version zip_filename abs_assets_dir
 
 	raw_slug="$(resolve_slug "${1:-}")"
 	plugin_slug="${raw_slug#wp-}"
@@ -137,8 +137,11 @@ main() {
 	# Cleanup
 	rm -rf "$TEMP_DIR"
 
+	# ✅ Get absolute path of PM_ASSETS_DIR
+	abs_assets_dir=$(cd "$PM_ASSETS_DIR" && pwd)
+
 	echo "✅ Build Complete!"
-	echo "📦 Versioned zip: $PM_ASSETS_DIR/$zip_filename"
+	echo "📦 Versioned zip: $abs_assets_dir/$zip_filename"
 }
 
 # Run the main function and pass all arguments
