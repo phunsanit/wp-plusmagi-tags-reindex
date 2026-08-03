@@ -1,6 +1,7 @@
 <?php
 /**
  * Plugin Name: PlusMagi Tags Reindex
+ * Plugin URI: https://plusmagi-tags-reindex.plusmagi.com
  * Description: Manage and reindex post tags safely. Missing term_id gaps will be recycled when enabled.
  * Version: 1.0.0
  * Requires at least: 6.0
@@ -390,7 +391,7 @@ class PlusMagi_Tags_Reindex_REST_API {
 			array(
 				'methods' => 'GET',
 				'callback' => array( $this, 'get_terms_with_stats' ),
-				'permission_callback' => array( $this, 'permissions_check' ),
+				'permission_callback' => array( $this, 'permissions_check_stats' ),
 			)
 		);
 
@@ -400,13 +401,23 @@ class PlusMagi_Tags_Reindex_REST_API {
 			array(
 				'methods' => 'POST',
 				'callback' => array( $this, 'add_reindexed_tag' ),
-				'permission_callback' => array( $this, 'permissions_check' ),
+				'permission_callback' => array( $this, 'permissions_check_add_tag' ),
 			)
 		);
 	}
 
-	public function permissions_check() {
-		return current_user_can( 'edit_posts' );
+	/**
+	 * Permission check for viewing stats (requires category management & editing other posts).
+	 */
+	public function permissions_check_stats() {
+		return current_user_can( 'manage_categories' ) && current_user_can( 'edit_posts' ) && current_user_can( 'edit_others_posts' );
+	}
+
+	/**
+	 * Permission check for adding tags (requires category management & post editing capabilities).
+	 */
+	public function permissions_check_add_tag() {
+		return current_user_can( 'manage_categories' ) && current_user_can( 'edit_posts' );
 	}
 
 	public function get_terms_with_stats( WP_REST_Request $request ) {
