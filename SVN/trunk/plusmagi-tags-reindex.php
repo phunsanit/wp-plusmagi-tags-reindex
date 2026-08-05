@@ -38,7 +38,7 @@ class PlusMagi_Tags_Reindex_Admin {
 	}
 
 	public function add_plugin_action_links( $links ) {
-		$settings_url = admin_url( 'tools.php?page=plusmagi-tags-reindex' );
+		$settings_url = admin_url( 'options-general.php?page=plusmagi-tags-reindex' );
 		$settings_link = '<a href="' . esc_url( $settings_url ) . '">' . esc_html__( 'Settings', 'plusmagi-tags-reindex' ) . '</a>';
 
 		array_unshift( $links, $settings_link );
@@ -54,15 +54,6 @@ class PlusMagi_Tags_Reindex_Admin {
 	}
 
 	public function register_admin_menu() {
-		add_submenu_page(
-			'tools.php',
-			__( 'PlusMagi Tags Reindex', 'plusmagi-tags-reindex' ),
-			__( 'Tags Reindex', 'plusmagi-tags-reindex' ),
-			'manage_options',
-			'plusmagi-tags-reindex',
-			array( $this, 'render_settings_page' )
-		);
-
 		add_options_page(
 			__( 'PlusMagi Tags Reindex', 'plusmagi-tags-reindex' ),
 			__( 'Tags Reindex', 'plusmagi-tags-reindex' ),
@@ -73,7 +64,7 @@ class PlusMagi_Tags_Reindex_Admin {
 	}
 
 	public function enqueue_admin_assets( $hook_suffix ) {
-		if ( 'tools_page_plusmagi-tags-reindex' !== $hook_suffix ) {
+		if ( 'settings_page_plusmagi-tags-reindex' !== $hook_suffix ) {
 			return;
 		}
 
@@ -407,17 +398,24 @@ class PlusMagi_Tags_Reindex_REST_API {
 	}
 
 	/**
-	 * Permission check for viewing stats (requires category management & editing other posts).
+	 * Permission check for viewing stats.
+	 * Allows anyone who can edit posts or manage tag taxonomy to view stats.
 	 */
 	public function permissions_check_stats() {
-		return current_user_can( 'manage_categories' ) && current_user_can( 'edit_posts' ) && current_user_can( 'edit_others_posts' );
+		return current_user_can( 'edit_posts' ) || current_user_can( 'manage_categories' );
 	}
 
 	/**
-	 * Permission check for adding tags (requires category management & post editing capabilities).
+	 * Permission check for adding tags.
+	 * Allows users who can edit posts, assign tags, or manage taxonomy.
 	 */
 	public function permissions_check_add_tag() {
-		return current_user_can( 'manage_categories' ) && current_user_can( 'edit_posts' );
+		$taxonomy = get_taxonomy( 'post_tag' );
+		$assign_capability = ( $taxonomy && isset( $taxonomy->cap->assign_terms ) )
+			? $taxonomy->cap->assign_terms
+			: 'edit_posts';
+
+		return current_user_can( $assign_capability ) || current_user_can( 'manage_categories' ) || current_user_can( 'edit_posts' );
 	}
 
 	public function get_terms_with_stats( WP_REST_Request $request ) {
