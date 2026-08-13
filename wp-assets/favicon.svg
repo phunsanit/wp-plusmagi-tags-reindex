@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Tag with centered plus icon">
-  <path fill="#5f6b76" d="M26 64c0-15.5 12.5-28 28-28h76c7.4 0 14.5 2.9 19.8 8.2l67.9 67.9c10.9 10.9 10.9 28.7 0 39.6l-66.2 66.2c-10.9 10.9-28.7 10.9-39.6 0L44.2 150.1C38.9 144.8 36 137.7 36 130.3V64h-10z"/>
-  <circle cx="92" cy="84" r="16" fill="#ffffff"/>
-
-  <rect x="117" y="91" width="22" height="74" rx="8" fill="#c00000"/>
-  <rect x="91" y="117" width="74" height="22" rx="8" fill="#c00000"/>
-</svg>

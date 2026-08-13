@@ -5,11 +5,11 @@ set -euo pipefail
 # --- Configuration ---
 PM_ORG_SLUG="plusmagi-tags-reindex"
 SOURCE_DIR="./SVN/trunk"
-PM_ASSETS_SRC="./wp-assets"
 SVN_ROOT="./SVN"
 SVN_TRUNK="${SVN_ROOT}/trunk"
 SVN_ASSETS="${SVN_ROOT}/assets"
 SVN_TAGS="${SVN_ROOT}/tags"
+PM_ASSETS_SRC="$SVN_ASSETS"
 
 sync_tree() {
 	local source_dir="$1"
@@ -22,6 +22,16 @@ sync_tree() {
 	fi
 
 	mkdir -p "$target_dir"
+
+	# Avoid rsyncing a directory onto itself.
+	local source_abs target_abs
+	source_abs=$(cd "$source_dir" && pwd -P)
+	target_abs=$(cd "$target_dir" && pwd -P)
+	if [ "$source_abs" = "$target_abs" ]; then
+		echo "⏭️  Skip $label sync (source and destination are the same: $source_dir)"
+		return
+	fi
+
 	echo "🔄 Syncing $label..."
 	rsync -av --delete --exclude='.svn/' --exclude='.git/' --exclude='.DS_Store' --exclude='*.zip' "$source_dir/" "$target_dir/"
 }
