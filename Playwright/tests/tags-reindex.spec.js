@@ -1,5 +1,6 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
+const { waitForPluginNotice } = require('./test-helpers');
 
 /**
  * PlusMagi Tags Reindex — Admin Tools tests
@@ -104,7 +105,7 @@ test.describe('PlusMagi Tags Reindex — Admin Tools', () => {
 			await toggle.click();
 		}
 		await page.locator('[name="plusmagi_tags_save_settings"]').click();
-		await expect(page.locator('.notice-success')).toBeVisible({ timeout: 20_000 });
+		await waitForPluginNotice(page, /Gap filling/i);
 	}
 
 	test('renders the Tags Reindex settings page correctly', async ({ page }) => {
@@ -219,8 +220,7 @@ test.describe('PlusMagi Tags Reindex — Admin Tools', () => {
 		test.skip(!state.hasUI, 'Environment is not deployed with the current PlusMagi admin UI yet.');
 
 		await page.locator('[name="plusmagi_tags_fix_slugs"]').click();
-		const notice = page.locator('.notice-success').first();
-		await expect(notice).toBeVisible({ timeout: 20_000 });
+		const notice = await waitForPluginNotice(page, /Successfully fixed/i);
 		await expect(notice).toContainText(/Successfully fixed \d+ conflicting tag slug\(s\)\./);
 	});
 });

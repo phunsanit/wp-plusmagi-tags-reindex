@@ -24,6 +24,6 @@
 		"linkedom": "^0.18.13"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^33.0.0"
+		"@wordpress/scripts": "^34.1.0"
 	}
 }

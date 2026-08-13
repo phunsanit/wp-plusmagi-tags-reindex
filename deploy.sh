@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 # --- Configuration ---
 PM_ORG_SLUG="plusmagi-tags-reindex"
 SOURCE_DIR="./SVN/trunk"
@@ -8,6 +10,31 @@ SVN_ROOT="./SVN"
 SVN_TRUNK="${SVN_ROOT}/trunk"
 SVN_ASSETS="${SVN_ROOT}/assets"
 SVN_TAGS="${SVN_ROOT}/tags"
+
+sync_tree() {
+	local source_dir="$1"
+	local target_dir="$2"
+	local label="$3"
+
+	if [ ! -d "$source_dir" ]; then
+		echo "⏭️  Skip $label sync (missing source: $source_dir)"
+		return
+	fi
+
+	mkdir -p "$target_dir"
+	echo "🔄 Syncing $label..."
+	rsync -av --delete --exclude='.svn/' --exclude='.git/' --exclude='.DS_Store' --exclude='*.zip' "$source_dir/" "$target_dir/"
+}
+
+register_svn_changes() {
+	cd "$SVN_ROOT" || exit
+	svn add --force trunk assets tags 2>/dev/null || true
+
+	# Remove files from SVN tracking when they no longer exist in source.
+	svn status | awk '/^!/ {print substr($0, 9)}' | while IFS= read -r missing_path; do
+		[ -n "$missing_path" ] && svn rm "$missing_path"
+	done
+}
 
 main() {
 	cd "$(dirname "$0")" || exit
@@ -28,26 +55,13 @@ main() {
 	echo "📦 Preparing SVN for version: $VERSION"
 
 	# 1. Sync SourceCode -> Trunk
-	if [ "$SOURCE_DIR" = "$SVN_TRUNK" ]; then
-		echo "⏭️  Skip trunk sync (source and destination are the same: $SOURCE_DIR)"
-	else
-		echo "🔄 Syncing trunk..."
-		rsync -av --delete --exclude='.svn/' --exclude='.git/' "$SOURCE_DIR/" "$SVN_TRUNK/"
-	fi
+	sync_tree "$SOURCE_DIR" "$SVN_TRUNK" "trunk"
 
 	# 2. Sync Images -> Assets (always exclude .zip files)
-	if [ -d "$PM_ASSETS_SRC" ]; then
-		echo "🎨 Syncing banners/icons to SVN assets..."
-		rsync -av --delete --exclude='.svn/' --exclude='*.zip' "$PM_ASSETS_SRC/" "$SVN_ASSETS/"
-	fi
+	sync_tree "$PM_ASSETS_SRC" "$SVN_ASSETS" "assets"
 
 	# 3. SVN Status Update
-	cd "$SVN_ROOT" || exit
-	svn add --force trunk/* assets/* 2>/dev/null
-	# Remove files from SVN tracking when they no longer exist in source.
-	svn status | awk '/^!/ {print substr($0, 9)}' | while IFS= read -r missing_path; do
-		[ -n "$missing_path" ] && svn rm "$missing_path"
-	done
+	register_svn_changes
 
 	# 4. Create Tag Automatically (idempotent)
 	if [ -d "tags/$VERSION" ]; then

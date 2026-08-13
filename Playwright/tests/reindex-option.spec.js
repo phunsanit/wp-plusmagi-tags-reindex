@@ -35,7 +35,8 @@ test.describe('PlusMagi Tags Reindex — Reindex option toggle', () => {
 		}
 
 		await page.locator('button[name="plusmagi_tags_save_settings"]').click();
-		await expect(page.locator('.notice-success')).toBeVisible({ timeout: 20_000 });
+		const gapFillNotice = page.locator('.notice-success').filter({ hasText: /Gap filling/i });
+		await expect(gapFillNotice).toBeVisible({ timeout: 20_000 });
 		await expect(page.locator('#enable_gap_fill')).toHaveJSProperty('checked', enabled);
 	}
 

@@ -65,17 +65,17 @@ module.exports = defineConfig({
         // ------------------------------------------------------------------
         {
             name: 'chromium',
-            testIgnore: /(block-tags|reindex-option|tags-reindex)\.spec\.js/,
+            testIgnore: /(block-tags|reindex-option|tags-reindex|post-4026|plugin-install|role-access|api-error-path|plugin-lifecycle)\.spec\.js/,
             use: { ...devices['Desktop Chrome'] },
         },
         {
             name: 'firefox',
-            testIgnore: /(block-tags|reindex-option|tags-reindex)\.spec\.js/,
+            testIgnore: /(block-tags|reindex-option|tags-reindex|post-4026|plugin-install|role-access|api-error-path|plugin-lifecycle)\.spec\.js/,
             use: { ...devices['Desktop Firefox'] },
         },
         {
             name: 'webkit',
-            testIgnore: /(block-tags|reindex-option|tags-reindex)\.spec\.js/,
+            testIgnore: /(block-tags|reindex-option|tags-reindex|post-4026|plugin-install|role-access|api-error-path|plugin-lifecycle)\.spec\.js/,
             use: { ...devices['Desktop Safari'] },
         },
 
@@ -85,7 +85,7 @@ module.exports = defineConfig({
         // ------------------------------------------------------------------
         {
             name: 'admin',
-            testMatch: /(block-tags|reindex-option|tags-reindex)\.spec\.js/,
+            testMatch: /(block-tags|reindex-option|tags-reindex|post-4026|plugin-install|role-access|api-error-path|plugin-lifecycle)\.spec\.js/,
             dependencies: ['setup'],
             use: {
                 ...devices['Desktop Chrome'],

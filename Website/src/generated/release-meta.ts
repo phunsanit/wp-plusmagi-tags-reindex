@@ -7,7 +7,7 @@ export const releaseMeta = {
     "Initial public release",
     "Smart gap filling with duplicate ID protection and transactions",
     "Enhanced custom Gutenberg tags panel",
-    "Bulk JSON import tool",
+    "Bulk tag import via comma-separated or line-separated input",
     "Full English i18n support",
     "Improved security and error handling"
   ],
@@ -15,5 +15,5 @@ export const releaseMeta = {
     "pluginHeader": "SVN/trunk/plusmagi-tags-reindex.php",
     "readme": "SVN/trunk/readme.txt"
   },
-  "generatedAt": "2026-07-27T00:51:54.532Z"
+  "generatedAt": "2026-08-13T01:22:31.888Z"
 } as const;

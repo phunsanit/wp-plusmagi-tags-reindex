@@ -11,6 +11,8 @@ coverage/
 **/.svn/
 SVN/**/dist/
 SVN/**/node_modules/
+SVN/assets/
+SVN/tags/
 
 # Logs
 npm-debug.log*

@@ -474,5 +474,3 @@ if (typeof window !== 'undefined' && window.wp?.domReady) {
 		dispatch('core/editor')?.removeEditorPanel('taxonomy-panel-post_tag');
 	});
 }
-
-export default TagsReindexPanel;

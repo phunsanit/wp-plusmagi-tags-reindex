@@ -7,7 +7,7 @@ const { chromium } = require('playwright');
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const BASE = (process.env.WP_BASE_URL || 'https://pitt.plusmagi.com').replace(/\/$/, '');
-const TARGET_URL = `${BASE}/wp-admin/post.php?post=660&action=edit`;
+const TARGET_URL = `${BASE}/wp-admin/post.php?post=4026&action=edit`;
 const ADMIN_USER = process.env.WP_ADMIN_USER || 'admin';
 const ADMIN_PASS = process.env.WP_ADMIN_PASSWORD || process.env.WP_ADMIN_PASS;
 
@@ -136,16 +136,16 @@ async function run() {
 			await saveGutenbergPost(page);
 
 			if (mode === 'custom-panel') {
-				console.log('SUCCESS: Gutenberg flow passed on post=660 (custom panel + update).');
+				console.log('SUCCESS: Gutenberg flow passed on post=4026 (custom panel + update).');
 			} else {
-				console.log('SUCCESS: Gutenberg flow passed on post=660 (default tags fallback + update).');
+				console.log('SUCCESS: Gutenberg flow passed on post=4026 (default tags fallback + update).');
 			}
 		} else {
 			const classicTagInput = page.locator('#new-tag-post_tag');
 			const classicUpdateButton = page.locator('#publish');
 
 			if ((await classicTagInput.count()) === 0 || (await classicUpdateButton.count()) === 0) {
-				throw new Error('Cannot find Gutenberg layout or classic editor tag/update controls on post=660');
+				throw new Error('Cannot find Gutenberg layout or classic editor tag/update controls on post=4026');
 			}
 
 			await classicTagInput.fill(SAMPLE_TAGS);
@@ -163,7 +163,7 @@ async function run() {
 			const updatedClassic = page.locator('#message.updated, .notice-success');
 			await updatedClassic.first().waitFor({ state: 'visible', timeout: 30000 });
 
-			console.log('SUCCESS: Classic editor fallback passed on post=660 (tags added + post updated).');
+			console.log('SUCCESS: Classic editor fallback passed on post=4026 (tags added + post updated).');
 		}
 	} finally {
 		await context.close();
