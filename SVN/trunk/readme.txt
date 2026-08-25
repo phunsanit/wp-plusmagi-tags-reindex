@@ -50,6 +50,9 @@ Yes, you can toggle between gap fill mode and normal mode at any time.
 
 == Changelog ==
 
+= 1.0.1 =
+* Fix: Corrected plugin banner and screenshot assets on WordPress.org
+
 = 1.0.0 =
 * Initial public release
 * Smart gap filling with duplicate ID protection and transactions
@@ -59,6 +62,9 @@ Yes, you can toggle between gap fill mode and normal mode at any time.
 * Improved security and error handling
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Corrected plugin banner and screenshot assets.
 
 = 1.0.0 =
 Initial version. Please backup your database before use.
