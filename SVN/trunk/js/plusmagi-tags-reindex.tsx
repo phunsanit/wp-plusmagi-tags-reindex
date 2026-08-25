@@ -1,8 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import { CheckboxControl, FormTokenField, Spinner, Button } from '@wordpress/components';
+import { PluginDocumentSettingPanel } from '@wordpress/editor';
 import { registerPlugin } from '@wordpress/plugins';
 import { useSelect, useDispatch, dispatch, select } from '@wordpress/data';
-import { useState, useEffect, useRef, useCallback, useMemo } from '@wordpress/element';
+import { createElement, Fragment, useState, useEffect, useRef, useCallback, useMemo } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 
 declare global {
@@ -42,22 +43,7 @@ const getInitialReindexState = (): boolean => {
 	return configVal === true || configVal === '1' || configVal === 1;
 };
 
-const getDocumentSettingPanel = () => {
-	const wpGlobal = window.wp as unknown as {
-		editPost?: { PluginDocumentSettingPanel?: React.ComponentType<any> };
-		editor?: { PluginDocumentSettingPanel?: React.ComponentType<any> };
-	};
-
-	return wpGlobal?.editPost?.PluginDocumentSettingPanel || wpGlobal?.editor?.PluginDocumentSettingPanel || null;
-};
-
 export const TagsReindexPanel: React.FC = () => {
-	const DocumentSettingPanel = getDocumentSettingPanel();
-
-	if (!DocumentSettingPanel) {
-		return null;
-	}
-
 	const [isGapFillEnabled, setIsGapFillEnabled] = useState<boolean>(() => getInitialReindexState());
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const [knownTerms, setKnownTerms] = useState<TagTerm[]>([]);
@@ -331,7 +317,7 @@ export const TagsReindexPanel: React.FC = () => {
 	};
 
 	return (
-		<DocumentSettingPanel
+		<PluginDocumentSettingPanel
 			name="plusmagi-tags-reindex-panel"
 			title={__('PlusMagi Tags Reindex', 'plusmagi-tags-reindex')}
 			className="plusmagi-tags-reindex-panel"
@@ -458,7 +444,7 @@ export const TagsReindexPanel: React.FC = () => {
 					)}
 				</div>
 			)}
-		</DocumentSettingPanel>
+		</PluginDocumentSettingPanel>
 	);
 };
 

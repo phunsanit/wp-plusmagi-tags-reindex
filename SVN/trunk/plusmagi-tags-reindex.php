@@ -3,7 +3,7 @@
  * Plugin Name: PlusMagi Tags Reindex
  * Plugin URI: https://plusmagi-tags-reindex.plusmagi.com
  * Description: Manage and reindex post tags safely. Missing term_id gaps will be recycled when enabled.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: Pitt Phunsanit
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PLUSMAGI_TAGS_REINDEX_VERSION', '1.0.0' );
+define( 'PLUSMAGI_TAGS_REINDEX_VERSION', '1.0.2' );
 define( 'PLUSMAGI_TAGS_REINDEX_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PLUSMAGI_TAGS_REINDEX_URL', plugin_dir_url( __FILE__ ) );
 
@@ -89,21 +89,6 @@ class PlusMagi_Tags_Reindex_Admin {
 		$dependencies = isset( $asset['dependencies'] ) && is_array( $asset['dependencies'] )
 			? $asset['dependencies']
 			: array( 'wp-element', 'wp-i18n', 'wp-components', 'wp-edit-post', 'wp-plugins', 'wp-data', 'wp-api-fetch' );
-
-		$dependencies = array_values(
-			array_filter(
-				$dependencies,
-				static function ( $dep ) {
-					return ! in_array( $dep, array( 'wp-edit-post', 'wp-editor' ), true );
-				}
-			)
-		);
-
-		if ( wp_script_is( 'wp-edit-post', 'registered' ) ) {
-			$dependencies[] = 'wp-edit-post';
-		} elseif ( wp_script_is( 'wp-editor', 'registered' ) ) {
-			$dependencies[] = 'wp-editor';
-		}
 
 		$version = isset( $asset['version'] ) ? $asset['version'] : PLUSMAGI_TAGS_REINDEX_VERSION;
 

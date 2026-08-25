@@ -2,6 +2,14 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+	define: {
+		'process.env.NODE_ENV': JSON.stringify('production'),
+	},
+	esbuild: {
+		jsx: 'transform',
+		jsxFactory: 'createElement',
+		jsxFragment: 'Fragment',
+	},
 	build: {
 		outDir: '../SVN/trunk/js', // Output to the folder loaded by PHP
 		emptyOutDir: false, // Do not remove other files in this folder
