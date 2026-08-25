@@ -1,0 +1,6 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.0/blueprint.json",
+  "title": "PlusMagi Tags Reindex",
+  "description": "WordPress plugin for smart tag management with gap filling and bulk import",
+  "textDomain": "plusmagi-tags-reindex"
+}
