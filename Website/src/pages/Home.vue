@@ -35,6 +35,20 @@
               Jump to Reindex
             </a>
           </div>
+          <div class="mt-6 rounded-2xl border border-[#2f7e6a]/20 bg-[#2f7e6a]/10 p-4 text-sm text-[#1f4f42]">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <strong>Plugin update: v{{ pluginRelease.version }}</strong>
+              <span class="text-xs font-semibold uppercase tracking-[0.12em]">Latest release</span>
+            </div>
+            <ul class="mt-2 list-disc space-y-1 pl-5">
+              <li v-for="item in pluginRelease.changelogItems" :key="item">{{ item }}</li>
+            </ul>
+          </div>
+          <img
+            :src="bannerImage"
+            alt="PlusMagi Tags Reindex hero banner"
+            class="mt-8 w-full max-w-4xl rounded-2xl border border-[#355d63]/25 shadow-[0_24px_70px_-35px_rgba(23,58,63,0.45)]"
+          />
         </div>
 
         <aside class="reveal-up delay-1 rounded-3xl border border-[#1c4d56]/15 bg-[#fffef9] p-5 shadow-[0_24px_70px_-35px_rgba(23,58,63,0.45)]">
@@ -131,6 +145,15 @@
 </template>
 
 <script setup lang="ts">
+import { releaseMeta } from '../generated/release-meta';
+
+const bannerImage = '/plugin-assets/banner-1544x500.png';
+
+const pluginRelease = {
+  version: releaseMeta.version,
+  changelogItems: releaseMeta.changelogItems,
+};
+
 const causes = [
   {
     title: 'Category and Tag Share the Same Slug',

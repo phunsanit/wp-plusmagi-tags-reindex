@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "sync:release-meta": "node ./scripts/sync-release-meta.mjs",
-    "predev": "npm run sync:release-meta",
-    "prebuild": "npm run sync:release-meta",
+    "sync:plugin-assets": "node ./scripts/sync-plugin-assets.mjs",
+    "predev": "npm run sync:release-meta && npm run sync:plugin-assets",
+    "prebuild": "npm run sync:release-meta && npm run sync:plugin-assets",
     "dev": "vite",
     "build": "vite build",
     "typecheck": "tsc --noEmit",

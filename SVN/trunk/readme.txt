@@ -3,8 +3,8 @@ Contributors: phunsanit
 Tags: tags, reindex, database, gutenberg, bulk import
 Requires at least: 6.0
 Requires PHP: 7.4
-Tested up to: 7.0.4
-Stable tag: 1.0.0
+Tested up to: 7.1
+Stable tag: 1.0.2
 Development: https://github.com/phunsanit/wp-plusmagi-tags-reindex
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -49,6 +49,9 @@ However, we recommend testing on a staging site first.
 Yes, you can toggle between gap fill mode and normal mode at any time.
 
 == Changelog ==
+
+= 1.0.2 =
+* Fix: Gutenberg sidebar runtime and asset compatibility updates
 
 = 1.0.1 =
 * Fix: Corrected plugin banner and screenshot assets on WordPress.org
