@@ -3,7 +3,7 @@
  * Plugin Name: PlusMagi Tags Reindex
  * Plugin URI: https://plusmagi-tags-reindex.plusmagi.com
  * Description: Manage and reindex post tags safely. Missing term_id gaps will be recycled when enabled.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: Pitt Phunsanit
