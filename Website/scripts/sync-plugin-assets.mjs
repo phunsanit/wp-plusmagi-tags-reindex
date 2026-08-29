@@ -9,6 +9,9 @@ const websitePublicDir = path.resolve(scriptDir, '../public');
 
 const mappings = [
   { sourceName: 'banner-1544x500.png', targetRelativePath: 'plugin-assets/banner-1544x500.png', required: true },
+  { sourceName: 'screenshot-1.jpg', targetRelativePath: 'plugin-assets/screenshot-1.jpg', required: true },
+  { sourceName: 'screenshot-2.jpg', targetRelativePath: 'plugin-assets/screenshot-2.jpg', required: true },
+  { sourceName: 'screenshot-3.jpg', targetRelativePath: 'plugin-assets/screenshot-3.jpg', required: true },
   { sourceName: 'icon-128x128.png', targetRelativePath: 'icon-128x128.png', required: true },
   { sourceName: 'icon-256x256.png', targetRelativePath: 'icon-256x256.png', required: true },
   { sourceName: 'icon-128x128.png', targetRelativePath: 'favicon.ico', required: false },

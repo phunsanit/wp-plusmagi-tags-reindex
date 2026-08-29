@@ -6,6 +6,7 @@
       <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
         <a href="#top" class="brand text-lg font-black tracking-tight text-[#16353b]">PlusMagi Tags Reindex</a>
         <nav class="hidden items-center gap-5 text-sm font-semibold text-[#355b61] md:flex">
+          <a href="#screenshots" class="hover:text-[#17353a]">Screenshots</a>
           <a href="#what" class="hover:text-[#17353a]">What</a>
           <a href="#causes" class="hover:text-[#17353a]">Causes</a>
           <a href="#fix" class="hover:text-[#17353a]">Fix Flow</a>
@@ -28,6 +29,9 @@
             This page gives you a practical fix workflow plus a safe term reindex routine.
           </p>
           <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+            <a href="https://wordpress.org/plugins/plusmagi-tags-reindex/" class="inline-flex justify-center rounded-full bg-[#cb4f2d] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#a93e23]">
+              Get the Plugin
+            </a>
             <a href="#fix" class="inline-flex justify-center rounded-full bg-[#173a3f] px-6 py-3 text-sm font-bold text-[#f9f5ee] transition hover:bg-[#0f2b2f]">
               Start Fix Steps
             </a>
@@ -65,7 +69,27 @@
         </aside>
       </section>
 
-      <section id="what" class="mx-auto max-w-6xl px-4 pb-10 md:pb-14">
+      <section id="screenshots" class="mx-auto max-w-6xl scroll-mt-24 px-4 pb-10 md:pb-14">
+        <div class="reveal-up flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p class="eyebrow">Live WordPress UI</p>
+            <h2 class="section-title mt-3 text-2xl font-black text-[#16363d] md:text-3xl">Manage Tags Where You Work</h2>
+          </div>
+          <a href="https://wordpress.org/plugins/plusmagi-tags-reindex/#description" class="text-sm font-bold text-[#a43e24] hover:text-[#762713]">
+            View on WordPress.org →
+          </a>
+        </div>
+        <div class="mt-5 grid gap-5 md:grid-cols-2">
+          <figure v-for="(screenshot, index) in screenshots" :key="screenshot.src" class="reveal-up overflow-hidden rounded-2xl border border-[#274e53]/20 bg-[#fffef9] shadow-[0_20px_55px_-38px_rgba(23,58,63,0.5)]" :class="{ 'md:col-span-2': index === 0 }" :style="{ animationDelay: `${index * 100}ms` }">
+            <img :src="screenshot.src" :alt="screenshot.alt" class="aspect-video w-full object-cover object-top" loading="lazy" />
+            <figcaption class="border-t border-[#274e53]/15 px-4 py-3 text-sm font-semibold text-[#355b61]">
+              {{ screenshot.caption }}
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="what" class="mx-auto max-w-6xl scroll-mt-24 px-4 pb-10 md:pb-14">
         <article class="reveal-up rounded-3xl border border-[#274e53]/15 bg-[#fffef9] p-6 md:p-8">
           <h2 class="section-title text-2xl font-black text-[#16363d] md:text-3xl">What Is a Conflicting Term Slug?</h2>
           <p class="mt-4 text-[#395d62]">
@@ -78,7 +102,7 @@
         </article>
       </section>
 
-      <section id="causes" class="mx-auto max-w-6xl px-4 pb-10 md:pb-14">
+      <section id="causes" class="mx-auto max-w-6xl scroll-mt-24 px-4 pb-10 md:pb-14">
         <h2 class="section-title reveal-up text-2xl font-black text-[#16363d] md:text-3xl">Common Causes</h2>
         <div class="mt-5 grid gap-4 md:grid-cols-2">
           <article v-for="(cause, index) in causes" :key="cause.title" class="reveal-up card p-5" :style="{ animationDelay: `${index * 90}ms` }">
@@ -88,7 +112,7 @@
         </div>
       </section>
 
-      <section id="fix" class="mx-auto max-w-6xl px-4 pb-10 md:pb-14">
+      <section id="fix" class="mx-auto max-w-6xl scroll-mt-24 px-4 pb-10 md:pb-14">
         <div class="rounded-3xl border border-[#1f4a50]/15 bg-[#13343a] p-6 text-[#ecf4f2] md:p-8">
           <h2 class="section-title text-2xl font-black md:text-3xl">Fix Workflow (Step by Step)</h2>
           <ol class="mt-5 grid gap-4 md:grid-cols-2">
@@ -101,7 +125,7 @@
         </div>
       </section>
 
-      <section id="reindex" class="mx-auto max-w-6xl px-4 pb-10 md:pb-14">
+      <section id="reindex" class="mx-auto max-w-6xl scroll-mt-24 px-4 pb-10 md:pb-14">
         <div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <article class="reveal-up rounded-3xl border border-[#355d63]/20 bg-[#fffefb] p-6 md:p-7">
             <h2 class="section-title text-2xl font-black text-[#16363d]">Reindex Terms Safely</h2>
@@ -109,7 +133,7 @@
               After slug cleanup, use PlusMagi Tags Reindex to normalize term creation flow and avoid recycled mistakes.
             </p>
             <ul class="mt-4 space-y-3 text-sm text-[#355b61]">
-              <li class="diag-row"><span class="dot bg-[#cb4f2d]"></span>Open Tools > Tags Reindex in wp-admin.</li>
+              <li class="diag-row"><span class="dot bg-[#cb4f2d]"></span>Open Settings > Tags Reindex in wp-admin.</li>
               <li class="diag-row"><span class="dot bg-[#2f7e6a]"></span>Run Fix Conflicting Term Slugs once to normalize <strong>-2</strong> style leftovers.</li>
               <li class="diag-row"><span class="dot bg-[#2f5f9f]"></span>Choose ID mode: reuse gaps or default auto-increment.</li>
               <li class="diag-row"><span class="dot bg-[#e78f2f]"></span>Import or add terms and validate term URLs immediately.</li>
@@ -129,7 +153,7 @@
         </div>
       </section>
 
-      <section id="prevention" class="mx-auto max-w-6xl px-4 pb-20">
+      <section id="prevention" class="mx-auto max-w-6xl scroll-mt-24 px-4 pb-20">
         <div class="rounded-3xl border border-[#23474d]/20 bg-[#f2f8f7] p-6 md:p-8">
           <h2 class="section-title text-2xl font-black text-[#16363d] md:text-3xl">Prevention for the Long Run</h2>
           <div class="mt-5 grid gap-4 md:grid-cols-3">
@@ -153,6 +177,24 @@ const pluginRelease = {
   version: releaseMeta.version,
   changelogItems: releaseMeta.changelogItems,
 };
+
+const screenshots = [
+  {
+    src: '/plugin-assets/screenshot-1.jpg',
+    alt: 'PlusMagi Tags Reindex settings and bulk import tools in WordPress',
+    caption: 'Configure gap filling and import tags in bulk from one settings page.',
+  },
+  {
+    src: '/plugin-assets/screenshot-2.jpg',
+    alt: 'PlusMagi Tags Reindex controls in the Gutenberg editor sidebar',
+    caption: 'Add and manage tags without leaving the Gutenberg editor.',
+  },
+  {
+    src: '/plugin-assets/screenshot-3.jpg',
+    alt: 'Tag usage summary showing published and draft counts',
+    caption: 'Review tag usage, publishing counts, and totals at a glance.',
+  },
+];
 
 const causes = [
   {
