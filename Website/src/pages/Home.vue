@@ -171,7 +171,8 @@
 <script setup lang="ts">
 import { releaseMeta } from '../generated/release-meta';
 
-const bannerImage = '/plugin-assets/banner-1544x500.png';
+const svnAssetBase = 'https://ps.w.org/plusmagi-tags-reindex/assets';
+const bannerImage = `${svnAssetBase}/banner-1544x500.png`;
 
 const pluginRelease = {
   version: releaseMeta.version,
@@ -180,17 +181,17 @@ const pluginRelease = {
 
 const screenshots = [
   {
-    src: '/plugin-assets/screenshot-1.jpg',
+    src: `${svnAssetBase}/screenshot-1.jpg`,
     alt: 'PlusMagi Tags Reindex settings and bulk import tools in WordPress',
     caption: 'Configure gap filling and import tags in bulk from one settings page.',
   },
   {
-    src: '/plugin-assets/screenshot-2.jpg',
+    src: `${svnAssetBase}/screenshot-2.jpg`,
     alt: 'PlusMagi Tags Reindex controls in the Gutenberg editor sidebar',
     caption: 'Add and manage tags without leaving the Gutenberg editor.',
   },
   {
-    src: '/plugin-assets/screenshot-3.jpg',
+    src: `${svnAssetBase}/screenshot-3.jpg`,
     alt: 'Tag usage summary showing published and draft counts',
     caption: 'Review tag usage, publishing counts, and totals at a glance.',
   },

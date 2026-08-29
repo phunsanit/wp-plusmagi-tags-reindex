@@ -10,5 +10,5 @@ export const releaseMeta = {
     "pluginHeader": "SVN/trunk/plusmagi-tags-reindex.php",
     "readme": "SVN/trunk/readme.txt"
   },
-  "generatedAt": "2026-08-29T02:21:03.305Z"
+  "generatedAt": "2026-08-29T02:59:53.255Z"
 } as const;

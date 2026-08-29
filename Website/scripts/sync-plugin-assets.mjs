@@ -5,41 +5,23 @@ import { fileURLToPath } from 'url';
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, '../..');
 const svnAssetsDir = path.join(repoRoot, 'SVN', 'assets');
-const websitePublicDir = path.resolve(scriptDir, '../public');
 
-const mappings = [
-  { sourceName: 'banner-1544x500.png', targetRelativePath: 'plugin-assets/banner-1544x500.png', required: true },
-  { sourceName: 'screenshot-1.jpg', targetRelativePath: 'plugin-assets/screenshot-1.jpg', required: true },
-  { sourceName: 'screenshot-2.jpg', targetRelativePath: 'plugin-assets/screenshot-2.jpg', required: true },
-  { sourceName: 'screenshot-3.jpg', targetRelativePath: 'plugin-assets/screenshot-3.jpg', required: true },
-  { sourceName: 'icon-128x128.png', targetRelativePath: 'icon-128x128.png', required: true },
-  { sourceName: 'icon-256x256.png', targetRelativePath: 'icon-256x256.png', required: true },
-  { sourceName: 'icon-128x128.png', targetRelativePath: 'favicon.ico', required: false },
+const requiredAssets = [
+  'banner-1544x500.png',
+  'screenshot-1.jpg',
+  'screenshot-2.jpg',
+  'screenshot-3.jpg',
+  'favicon.svg',
+  'favicon-32x32.png',
+  'favicon-16x16.png',
 ];
 
-async function copyMappedAsset({ sourceName, targetRelativePath, required }) {
-  const sourcePath = path.join(svnAssetsDir, sourceName);
-  const targetPath = path.join(websitePublicDir, targetRelativePath);
-
-  try {
-    await fs.access(sourcePath);
-    await fs.mkdir(path.dirname(targetPath), { recursive: true });
-    await fs.copyFile(sourcePath, targetPath);
-  } catch (error) {
-    if (required) {
-      throw error;
-    }
-
-    console.warn(`Skipped optional asset ${targetRelativePath}: ${error.message}`);
-  }
-}
-
 async function main() {
-  for (const mapping of mappings) {
-    await copyMappedAsset(mapping);
+  for (const assetName of requiredAssets) {
+    await fs.access(path.join(svnAssetsDir, assetName));
   }
 
-  console.log('Synced tags-reindex assets from SVN/assets');
+  console.log('Validated tags-reindex assets in SVN/assets');
 }
 
 main().catch((error) => {
