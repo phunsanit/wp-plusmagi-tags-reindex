@@ -2,54 +2,54 @@ name: CI Build and Test
 
 on:
   push:
-	branches: [ main ]
+    branches: [ main ]
   pull_request:
-	branches: [ main ]
+    branches: [ main ]
 
 jobs:
   build-and-test:
-	timeout-minutes: 60
-	runs-on: ubuntu-latest
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
 
-	steps:
-	- name: Checkout code
-	  uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-	- name: Setup Node.js
-	  uses: actions/setup-node@v4
-	  with:
-		node-version: 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-	# 1. Install root dependencies for compiling UI assets (TSX -> JS)
-	- name: Install Plugin Dependencies
-	  run: |
-		if [ -f package.json ]; then
-		  npm ci || npm install
-		fi
+      # 1. Install root dependencies for compiling UI assets (TSX -> JS)
+      - name: Install Plugin Dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm ci || npm install
+          fi
 
-	# 2. Install Playwright dependencies
-	- name: Install Playwright Dependencies
-	  working-directory: ./Playwright
-	  run: |
-		npm ci || npm install
-		npx playwright install --with-deps
+      # 2. Install Playwright dependencies
+      - name: Install Playwright Dependencies
+        working-directory: ./Playwright
+        run: |
+          npm ci || npm install
+          npx playwright install --with-deps
 
-	# 3. Run build.sh to compile assets and package ZIP into ./wp-assets/
-	- name: Build Plugin Zip
-	  run: bash ./build.sh plusmagi-tags-reindex
+      # 3. Run build.sh to compile assets and package ZIP into ./wp-assets/
+      - name: Build Plugin Zip
+        run: bash ./build.sh plusmagi-tags-reindex
 
-	# 4. Upload artifact (ZIP from wp-assets folder)
-	- name: Upload Built Plugin
-	  uses: actions/upload-artifact@v4
-	  with:
-		name: plusmagi-tags-reindex-latest
-		path: wp-assets/*.zip
+      # 4. Upload artifact (ZIP from wp-assets folder)
+      - name: Upload Built Plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: plusmagi-tags-reindex-latest
+          path: wp-assets/*.zip
 
-	# 5. Run Playwright E2E tests
-	- name: Run Playwright E2E Tests
-	  working-directory: ./Playwright
-	  env:
-		WP_ADMIN_PASSWORD: ${{ secrets.WP_ADMIN_PASSWORD }}
-	  run: |
-		npx playwright test --project=setup
-		npx playwright test --project=admin
+      # 5. Run Playwright REST tests
+      - name: Run Playwright REST Tests
+        working-directory: ./Playwright
+        env:
+          WP_URL: ${{ vars.WP_URL }}
+          WP_ADMIN_USER: ${{ vars.WP_ADMIN_USER }}
+          WP_APPLICATION_PASSWORD: ${{ secrets.WP_APPLICATION_PASSWORD }}
+        run: npx playwright test --project=admin

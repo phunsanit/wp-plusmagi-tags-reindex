@@ -15,19 +15,8 @@ while true; do
 		continue
 	fi
 
-	# 2. Upload plugin automatically to target site
+	# 2. Run REST tests against the deployed target
 	echo -e "\n📦 Build completed"
-	echo "☁️  Uploading plugin automatically (supports overwrite flow for same version)..."
-	node ./Playwright/scripts/upload-plugin.js
-	if [ $? -ne 0 ]; then
-		echo "❌ Plugin upload failed"
-		echo "👉 Fix the issue and press [Enter] to retry..."
-		read -r
-		continue
-	fi
-	echo "✅ Plugin upload/overwrite completed, starting tests"
-
-	# 3. Run Playwright tests
 	echo -e "\n🧪 Running Playwright tests (admin project)..."
 	(
 		cd Playwright || exit 1
@@ -35,7 +24,7 @@ while true; do
 	)
 	TEST_RESULT=$?
 
-	# 4. Evaluate result and continue loop if needed
+	# 3. Evaluate result and continue loop if needed
 	if [ $TEST_RESULT -eq 0 ]; then
 		echo -e "\n✅ All tests passed. Exiting loop."
 		break

@@ -2,18 +2,19 @@
 const { defineConfig, devices } = require('@playwright/test');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
+const { getWordPressConfig } = require('./wordpress-config');
 
 /**
  * Playwright configuration for PlusMagi Tags Reindex plugin tests.
- * Target: https://pitt.plusmagi.com  (live WordPress site with plugin installed)
+ * Target: WP_URL (live WordPress site with plugin installed)
  *
  * Run all guest tests:       npx playwright test
  * Run with UI:               npx playwright test --ui
- * Run admin/block tests:     npx playwright test --project=admin  (uses .env)
+ * Run authenticated tests:   npx playwright test --project=admin  (uses .env)
  * Show HTML report:          npx playwright show-report
  */
 
-const ADMIN_STATE = path.join(__dirname, 'auth/admin-state.json');
+const wordpress = getWordPressConfig();
 
 module.exports = defineConfig({
     testDir: './tests',
@@ -33,7 +34,7 @@ module.exports = defineConfig({
 
     /* Shared settings for every test */
     use: {
-        baseURL: 'https://pitt.plusmagi.com',
+        baseURL: wordpress.baseURL,
 
         /* Allow up to 60s for any navigation on this ad-heavy live site */
         navigationTimeout: 60_000,
@@ -51,45 +52,33 @@ module.exports = defineConfig({
 
     projects: [
         // ------------------------------------------------------------------
-        // Setup: log in to WP admin and save cookies for the admin project
-        // Run: npx playwright test --project=setup  (uses .env)
-        // ------------------------------------------------------------------
-        {
-            name: 'setup',
-            testMatch: /auth\/admin\.setup\.js/,
-            use: { ...devices['Desktop Chrome'] },
-        },
-
-        // ------------------------------------------------------------------
         // Guest tests — no authentication required (3 browsers)
         // ------------------------------------------------------------------
         {
             name: 'chromium',
-            testIgnore: /(block-tags|reindex-option|tags-reindex|post-4026|plugin-install|role-access|api-error-path|plugin-lifecycle)\.spec\.js/,
+            testIgnore: /(authenticated-api|block-tags|reindex-option|tags-reindex|post-4026|plugin-install|role-access|api-error-path|plugin-lifecycle)\.spec\.js/,
             use: { ...devices['Desktop Chrome'] },
         },
         {
             name: 'firefox',
-            testIgnore: /(block-tags|reindex-option|tags-reindex|post-4026|plugin-install|role-access|api-error-path|plugin-lifecycle)\.spec\.js/,
+            testIgnore: /(authenticated-api|block-tags|reindex-option|tags-reindex|post-4026|plugin-install|role-access|api-error-path|plugin-lifecycle)\.spec\.js/,
             use: { ...devices['Desktop Firefox'] },
         },
         {
             name: 'webkit',
-            testIgnore: /(block-tags|reindex-option|tags-reindex|post-4026|plugin-install|role-access|api-error-path|plugin-lifecycle)\.spec\.js/,
+            testIgnore: /(authenticated-api|block-tags|reindex-option|tags-reindex|post-4026|plugin-install|role-access|api-error-path|plugin-lifecycle)\.spec\.js/,
             use: { ...devices['Desktop Safari'] },
         },
 
         // ------------------------------------------------------------------
-        // Admin tests — Gutenberg block tests (requires WP_ADMIN_PASS)
-        // Depends on 'setup' project having run first.
+        // Authenticated REST tests (requires WP_APPLICATION_PASSWORD)
         // ------------------------------------------------------------------
         {
             name: 'admin',
-            testMatch: /(block-tags|reindex-option|tags-reindex|post-4026|plugin-install|role-access|api-error-path|plugin-lifecycle)\.spec\.js/,
-            dependencies: ['setup'],
+            testMatch: /(authenticated-api|role-access)\.spec\.js/,
             use: {
                 ...devices['Desktop Chrome'],
-                storageState: ADMIN_STATE,
+                extraHTTPHeaders: wordpress.extraHTTPHeaders,
             },
         },
     ],

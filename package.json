@@ -13,8 +13,7 @@
 		"preview:website": "npm run preview -w @plusmagi/website",
 		"deploy:all": "npm run build:all && npm run deploy:plugin",
 		"deploy:plugin": "npm run deploy -w @plusmagi/plugin",
-		"test:admin": "cd Playwright && npx playwright test --project=admin",
-		"test:setup": "cd Playwright && npx playwright test --project=setup"
+		"test:admin": "cd Playwright && npx playwright test --project=admin"
 	},
 	"workspaces": [
 		"plugin",

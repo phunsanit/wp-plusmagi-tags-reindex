@@ -43,12 +43,11 @@ tree -I 'node_modules|.git|.svn|.DS_Store|temp_build|playwright-report|test-resu
 ### 🧪 Testing (Playwright)
 รันเทสสำหรับโปรเจกต์ (รันจากโฟลเดอร์ root):
 ```bash
-# รันลูปอัตโนมัติ: Build -> ให้เวลาอัปโหลด -> ยิง Test -> วนลูป
+# รันลูปอัตโนมัติ: Build -> ยิง REST Test กับ target ที่ deploy แล้ว -> วนลูป
 ./auto-test-loop.sh
 
 # หรือรันแยกเฉพาะ Playwright
-npm run test:setup  # ล็อกอินเข้าแอดมิน (ต้องการ WP_ADMIN_PASSWORD ใน .env)
-npm run test:admin  # รันเทสหน้า Tools และหน้า Block Editor
+npm run test:admin  # ใช้ WP_URL, WP_ADMIN_USER และ WP_APPLICATION_PASSWORD จาก .env
 ```
 
 ### 🚀 Build & Deploy
